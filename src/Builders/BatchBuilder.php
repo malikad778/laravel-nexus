@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Builders;
+namespace Malikad778\LaravelNexus\Builders;
 
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
@@ -43,3 +43,4 @@ class BatchBuilder
         return $batch->dispatch();
     }
 }
+

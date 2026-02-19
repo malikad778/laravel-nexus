@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Http\Livewire;
+namespace Malikad778\LaravelNexus\Http\Livewire;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -26,3 +26,4 @@ class WebhookLog extends Component
         ]);
     }
 }
+

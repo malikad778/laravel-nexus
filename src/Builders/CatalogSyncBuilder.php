@@ -1,8 +1,8 @@
 <?php
 
-namespace Adnan\LaravelNexus\Builders;
+namespace Malikad778\LaravelNexus\Builders;
 
-use Adnan\LaravelNexus\Jobs\ChannelSyncBatchJob;
+use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
 use Illuminate\Support\Facades\Bus;
 
 class CatalogSyncBuilder
@@ -68,3 +68,4 @@ class CatalogSyncBuilder
             ->dispatch();
     }
 }
+

@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Drivers\Amazon;
+namespace Malikad778\LaravelNexus\Drivers\Amazon;
 
 class AwsV4Signer
 {
@@ -56,3 +56,4 @@ class AwsV4Signer
         return array_merge($headers, ['Authorization' => $authorization]);
     }
 }
+

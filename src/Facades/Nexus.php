@@ -1,18 +1,18 @@
 <?php
 
-namespace Adnan\LaravelNexus\Facades;
+namespace Malikad778\LaravelNexus\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Adnan\LaravelNexus\Contracts\InventoryDriver channel(string $name = null)
- * @method static \Adnan\LaravelNexus\Contracts\InventoryDriver driver(string $name = null)
- * @method static \Adnan\LaravelNexus\InventoryManager context(array $context)
- * @method static \Adnan\LaravelNexus\Builders\CatalogSyncBuilder catalog(mixed $products = null)
- * @method static \Adnan\LaravelNexus\Builders\ProductSyncBuilder product(mixed $product)
- * @method static \Adnan\LaravelNexus\Builders\BatchBuilder batch(string $name = null)
+ * @method static \Malikad778\LaravelNexus\Contracts\InventoryDriver channel(string $name = null)
+ * @method static \Malikad778\LaravelNexus\Contracts\InventoryDriver driver(string $name = null)
+ * @method static \Malikad778\LaravelNexus\InventoryManager context(array $context)
+ * @method static \Malikad778\LaravelNexus\Builders\CatalogSyncBuilder catalog(mixed $products = null)
+ * @method static \Malikad778\LaravelNexus\Builders\ProductSyncBuilder product(mixed $product)
+ * @method static \Malikad778\LaravelNexus\Builders\BatchBuilder batch(string $name = null)
  *
- * @see \Adnan\LaravelNexus\InventoryManager
+ * @see \Malikad778\LaravelNexus\InventoryManager
  */
 class Nexus extends Facade
 {
@@ -21,3 +21,4 @@ class Nexus extends Facade
         return 'nexus';
     }
 }
+

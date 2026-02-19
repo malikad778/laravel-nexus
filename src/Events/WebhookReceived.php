@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Events;
+namespace Malikad778\LaravelNexus\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -16,3 +16,4 @@ class WebhookReceived
         public int $logId
     ) {}
 }
+

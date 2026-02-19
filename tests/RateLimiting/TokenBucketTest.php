@@ -1,6 +1,6 @@
 <?php
 
-use Adnan\LaravelNexus\RateLimiting\TokenBucket;
+use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 use Illuminate\Support\Facades\Redis;
 
 it('can acquire tokens', function () {
@@ -31,3 +31,4 @@ it('fails when redis returns 0', function () {
 
     expect($result)->toBeFalse();
 });
+

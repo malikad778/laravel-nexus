@@ -1,8 +1,8 @@
 <?php
 
-use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Adnan\LaravelNexus\Drivers\Shopify\ShopifyDriver;
-use Adnan\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\Drivers\Shopify\ShopifyDriver;
+use Malikad778\LaravelNexus\Facades\Nexus;
 
 it('can resolve the default driver', function () {
     config()->set('nexus.drivers.shopify', [
@@ -28,3 +28,4 @@ it('can get channel name from driver', function () {
 
     expect($driver->getChannelName())->toBe('shopify');
 });
+

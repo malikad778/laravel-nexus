@@ -1,9 +1,9 @@
 # Laravel Nexus 🚀
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/adnan/laravel-nexus.svg?style=flat-square)](https://packagist.org/packages/adnan/laravel-nexus)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/malikad778/laravel-nexus.svg?style=flat-square)](https://packagist.org/packages/malikad778/laravel-nexus)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/malikad778/laravel-nexus/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/malikad778/laravel-nexus/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/malikad778/laravel-nexus/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/malikad778/laravel-nexus/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/adnan/laravel-nexus.svg?style=flat-square)](https://packagist.org/packages/adnan/laravel-nexus)
+[![Total Downloads](https://img.shields.io/packagist/dt/malikad778/laravel-nexus.svg?style=flat-square)](https://packagist.org/packages/malikad778/laravel-nexus)
 
 -   **Webhooks**: Verified, secure webhook handling for real-time updates.
 -   **Dashboard**: A focused administrative interface to monitor channel status and sync health.
@@ -39,7 +39,7 @@ graph TD
 You can extend Nexus with your own drivers. Just implement the `InventoryDriver` interface:
 
 ```php
-use Adnan\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\\LaravelNexus\Contracts\InventoryDriver;
 
 class eBayDriver implements InventoryDriver {
     // Implement getProducts, updateInventory, etc.
@@ -69,7 +69,7 @@ Nexus uses a **Token Bucket** algorithm backed by Redis to respect API limits. Y
 You can install the package via composer:
 
 ```bash
-composer require adnan/laravel-nexus
+composer require malikad778/laravel-nexus
 ```
 
 Publish the config file and migrations:
@@ -122,7 +122,7 @@ See `config/nexus.php` for advanced configuration, including rate limits and mid
 Access any driver using the `Nexus` facade:
 
 ```php
-use Adnan\LaravelNexus\Facades\Nexus;
+use Malikad778\\LaravelNexus\Facades\Nexus;
 
 // Get products from Shopify
 $products = Nexus::driver('shopify')->getProducts();
@@ -147,11 +147,11 @@ The `VerifyNexusWebhookSignature` middleware ensures all requests are authentic.
 ### Importing Products
 
 When running `ChannelSyncBatchJob` (via the scheduler or manually), Nexus fetches recent products from the configured channels.
-To handle these imported products (e.g., to create local models), listen for the `Adnan\LaravelNexus\Events\ProductImported` event:
+To handle these imported products (e.g., to create local models), listen for the `Malikad778\\LaravelNexus\Events\ProductImported` event:
 
 ```php
 // In EventServiceProvider
-use Adnan\LaravelNexus\Events\ProductImported;
+use Malikad778\\LaravelNexus\Events\ProductImported;
 
 protected $listen = [
     ProductImported::class => [

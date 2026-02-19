@@ -1,8 +1,8 @@
 <?php
 
-namespace Adnan\LaravelNexus\Http\Livewire;
+namespace Malikad778\LaravelNexus\Http\Livewire;
 
-use Adnan\LaravelNexus\Models\NexusDeadLetterQueue;
+use Malikad778\LaravelNexus\Models\NexusDeadLetterQueue;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -38,3 +38,4 @@ class DeadLetterQueue extends Component
         ]);
     }
 }
+

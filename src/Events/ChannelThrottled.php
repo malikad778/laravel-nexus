@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Events;
+namespace Malikad778\LaravelNexus\Events;
 
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -25,3 +25,4 @@ class ChannelThrottled implements ShouldBroadcast
         return 'channel.throttled';
     }
 }
+

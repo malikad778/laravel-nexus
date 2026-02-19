@@ -1,9 +1,9 @@
 <?php
 
-use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\Jobs\PushInventoryJob;
-use Adnan\LaravelNexus\RateLimiting\TokenBucket;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\Jobs\PushInventoryJob;
+use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 
 it('respects rate limits and updates inventory', function () {
     $limiter = Mockery::mock(TokenBucket::class);
@@ -40,7 +40,7 @@ it('releases job when rate limit exceeded', function () {
 
     $job->handle($limiter);
 
-    \Illuminate\Support\Facades\Event::assertDispatched(\Adnan\LaravelNexus\Events\ChannelThrottled::class, function ($event) {
+    \Illuminate\Support\Facades\Event::assertDispatched(\Malikad778\LaravelNexus\Events\ChannelThrottled::class, function ($event) {
         return $event->channel === 'shopify' && $event->retryAfter === 5;
     });
 });
@@ -65,7 +65,8 @@ it('dispatches failure event on exception', function () {
         $job->failed($e);
     }
 
-    \Illuminate\Support\Facades\Event::assertDispatched(\Adnan\LaravelNexus\Events\InventorySyncFailed::class, function ($event) {
+    \Illuminate\Support\Facades\Event::assertDispatched(\Malikad778\LaravelNexus\Events\InventorySyncFailed::class, function ($event) {
         return $event->channel === 'shopify' && $event->reason === 'API Error';
     });
 });
+

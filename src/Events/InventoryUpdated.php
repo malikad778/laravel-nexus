@@ -1,8 +1,8 @@
 <?php
 
-namespace Adnan\LaravelNexus\Events;
+namespace Malikad778\LaravelNexus\Events;
 
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -17,3 +17,4 @@ class InventoryUpdated
         public int $newQuantity
     ) {}
 }
+

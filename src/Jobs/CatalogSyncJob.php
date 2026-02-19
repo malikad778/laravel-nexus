@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Jobs;
+namespace Malikad778\LaravelNexus\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,3 +35,4 @@ class CatalogSyncJob implements ShouldQueue
         }
     }
 }
+

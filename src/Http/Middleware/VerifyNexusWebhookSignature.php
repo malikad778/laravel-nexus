@@ -1,9 +1,9 @@
 <?php
 
-namespace Adnan\LaravelNexus\Http\Middleware;
+namespace Malikad778\LaravelNexus\Http\Middleware;
 
-use Adnan\LaravelNexus\Contracts\WebhookVerifier;
-use Adnan\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
+use Malikad778\LaravelNexus\Facades\Nexus;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,3 +53,4 @@ class VerifyNexusWebhookSignature
         }
     }
 }
+

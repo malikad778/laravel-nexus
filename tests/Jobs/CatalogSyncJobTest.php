@@ -1,7 +1,7 @@
 <?php
 
-use Adnan\LaravelNexus\Jobs\CatalogSyncJob;
-use Adnan\LaravelNexus\Jobs\ChannelSyncBatchJob;
+use Malikad778\LaravelNexus\Jobs\CatalogSyncJob;
+use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
 use Illuminate\Support\Facades\Bus;
 
 it('dispatches batch job for each channel', function () {
@@ -20,3 +20,4 @@ it('dispatches batch job for each channel', function () {
                $batch->jobs->first() instanceof ChannelSyncBatchJob;
     });
 });
+

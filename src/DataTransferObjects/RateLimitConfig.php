@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\DataTransferObjects;
+namespace Malikad778\LaravelNexus\DataTransferObjects;
 
 class RateLimitConfig
 {
@@ -10,3 +10,4 @@ class RateLimitConfig
         public int $cost = 1
     ) {}
 }
+

@@ -1,8 +1,8 @@
 <?php
 
-namespace Adnan\LaravelNexus\Tests\Unit\Webhooks;
+namespace Malikad778\LaravelNexus\Tests\Unit\Webhooks;
 
-use Adnan\LaravelNexus\Webhooks\Verifiers\WooCommerceWebhookVerifier;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\WooCommerceWebhookVerifier;
 use Illuminate\Http\Request;
 
 it('verifies valid woocommerce signature', function () {
@@ -29,3 +29,4 @@ it('rejects invalid woocommerce signature', function () {
 
     expect($verifier->verify($request))->toBeFalse();
 });
+

@@ -1,7 +1,7 @@
 <?php
 
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
-use Adnan\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\Facades\Nexus;
 use Illuminate\Support\Facades\Http;
 
 it('can fetch products from etsy', function () {
@@ -87,3 +87,4 @@ it('can update inventory on etsy', function () {
                $request['products'][0]['offerings'][0]['quantity'] === 10;
     });
 });
+

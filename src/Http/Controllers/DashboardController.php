@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Http\Controllers;
+namespace Malikad778\LaravelNexus\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -139,3 +139,4 @@ class DashboardController extends Controller
         ];
     }
 }
+

@@ -1,10 +1,10 @@
 <?php
 
-namespace Adnan\LaravelNexus\Tests\Unit;
+namespace Malikad778\LaravelNexus\Tests\Unit;
 
-use Adnan\LaravelNexus\Drivers\Shopify\ShopifyDriver;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\InventoryManager;
+use Malikad778\LaravelNexus\Drivers\Shopify\ShopifyDriver;
+use Malikad778\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\InventoryManager;
 
 it('resolves default driver', function () {
     $driver = Nexus::driver();
@@ -54,3 +54,4 @@ it('does not leak context to singleton', function () {
 
     expect($config['shop_url'])->not->toBe('leaked.myshopify.com');
 });
+

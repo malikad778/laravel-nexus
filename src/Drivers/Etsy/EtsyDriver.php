@@ -1,11 +1,11 @@
 <?php
 
-namespace Adnan\LaravelNexus\Drivers\Etsy;
+namespace Malikad778\LaravelNexus\Drivers\Etsy;
 
-use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Adnan\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
-use Adnan\LaravelNexus\DataTransferObjects\RateLimitConfig;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -149,9 +149,9 @@ class EtsyDriver implements InventoryDriver
         return $this->getWebhookVerifier()->verify($request);
     }
 
-    public function getWebhookVerifier(): \Adnan\LaravelNexus\Contracts\WebhookVerifier
+    public function getWebhookVerifier(): \Malikad778\LaravelNexus\Contracts\WebhookVerifier
     {
-        return new \Adnan\LaravelNexus\Webhooks\Verifiers\EtsyWebhookVerifier($this->config);
+        return new \Malikad778\LaravelNexus\Webhooks\Verifiers\EtsyWebhookVerifier($this->config);
     }
 
     public function parseWebhookPayload(Request $request): NexusInventoryUpdate
@@ -185,3 +185,4 @@ class EtsyDriver implements InventoryDriver
         return 'etsy';
     }
 }
+

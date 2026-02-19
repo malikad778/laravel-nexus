@@ -1,6 +1,6 @@
 <?php
 
-use Adnan\LaravelNexus\Webhooks\Verifiers\ShopifyWebhookVerifier;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\ShopifyWebhookVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -29,3 +29,4 @@ it('rejects invalid shopify signature', function () {
     $verifier = new ShopifyWebhookVerifier;
     expect($verifier->verify($request))->toBeFalse();
 });
+

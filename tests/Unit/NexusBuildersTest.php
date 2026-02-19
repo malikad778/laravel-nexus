@@ -1,11 +1,11 @@
 <?php
 
-namespace Adnan\LaravelNexus\Tests\Unit;
+namespace Malikad778\LaravelNexus\Tests\Unit;
 
-use Adnan\LaravelNexus\Builders\BatchBuilder;
-use Adnan\LaravelNexus\Builders\CatalogSyncBuilder;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\Jobs\ChannelSyncBatchJob;
+use Malikad778\LaravelNexus\Builders\BatchBuilder;
+use Malikad778\LaravelNexus\Builders\CatalogSyncBuilder;
+use Malikad778\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 
@@ -46,3 +46,4 @@ it('batch builder dispatches batch with custom name', function () {
         return $batch->name === 'custom-audit-batch';
     });
 });
+

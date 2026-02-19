@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\DataTransferObjects;
+namespace Malikad778\LaravelNexus\DataTransferObjects;
 
 class NexusInventoryUpdate
 {
@@ -11,3 +11,4 @@ class NexusInventoryUpdate
         public array $meta = []
     ) {}
 }
+

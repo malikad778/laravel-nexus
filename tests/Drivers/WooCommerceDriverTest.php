@@ -1,7 +1,7 @@
 <?php
 
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
-use Adnan\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\Facades\Nexus;
 use Illuminate\Support\Facades\Http;
 
 it('can fetch products from woocommerce', function () {
@@ -62,3 +62,4 @@ it('can update inventory on woocommerce', function () {
                $request['stock_quantity'] === 50;
     });
 });
+

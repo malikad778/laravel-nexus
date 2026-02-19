@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Models;
+namespace Malikad778\LaravelNexus\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -30,3 +30,4 @@ class NexusSyncJob extends Model
         'finished_at' => 'datetime',
     ];
 }
+

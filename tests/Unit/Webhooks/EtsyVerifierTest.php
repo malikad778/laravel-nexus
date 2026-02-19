@@ -1,8 +1,8 @@
 <?php
 
-namespace Adnan\LaravelNexus\Tests\Unit\Webhooks;
+namespace Malikad778\LaravelNexus\Tests\Unit\Webhooks;
 
-use Adnan\LaravelNexus\Webhooks\Verifiers\EtsyWebhookVerifier;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\EtsyWebhookVerifier;
 use Illuminate\Http\Request;
 
 it('verifies valid etsy signature', function () {
@@ -31,3 +31,4 @@ it('rejects invalid etsy signature', function () {
 
     expect($verifier->verify($request))->toBeFalse();
 });
+

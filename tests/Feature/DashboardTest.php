@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
+class DashboardTest extends \Malikad778\LaravelNexus\Tests\TestCase
 {
     protected function setUp(): void
     {
@@ -43,7 +43,7 @@ class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
         if (class_exists(\Livewire\Livewire::class)) {
             $response->assertSeeLivewire('nexus-webhook-log');
 
-            \Livewire\Livewire::test(\Adnan\LaravelNexus\Http\Livewire\WebhookLog::class)
+            \Livewire\Livewire::test(\Malikad778\LaravelNexus\Http\Livewire\WebhookLog::class)
                 ->assertSee('shopify')
                 ->assertSee('products/update');
         } else {
@@ -69,7 +69,7 @@ class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
         if (class_exists(\Livewire\Livewire::class)) {
             $response->assertSeeLivewire('nexus-dead-letter-queue');
 
-            \Livewire\Livewire::test(\Adnan\LaravelNexus\Http\Livewire\DeadLetterQueue::class)
+            \Livewire\Livewire::test(\Malikad778\LaravelNexus\Http\Livewire\DeadLetterQueue::class)
                 ->assertSee('SomeJob');
         } else {
             $response->assertSee('Dead Letter Queue');
@@ -136,3 +136,4 @@ class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
         expect(DB::table('nexus_dead_letter_queue')->find($id))->toBeNull();
     }
 }
+

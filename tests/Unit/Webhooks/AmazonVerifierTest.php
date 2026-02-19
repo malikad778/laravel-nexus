@@ -1,6 +1,6 @@
 <?php
 
-use Adnan\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -72,3 +72,4 @@ it('rejects invalid amazon sns signature', function () {
     $verifier = new AmazonWebhookVerifier;
     expect($verifier->verify($request))->toBeFalse();
 });
+

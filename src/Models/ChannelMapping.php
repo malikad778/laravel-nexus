@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Models;
+namespace Malikad778\LaravelNexus\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -24,3 +24,4 @@ class ChannelMapping extends Model
         return $this->morphTo();
     }
 }
+

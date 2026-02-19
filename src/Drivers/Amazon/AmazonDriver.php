@@ -1,11 +1,11 @@
 <?php
 
-namespace Adnan\LaravelNexus\Drivers\Amazon;
+namespace Malikad778\LaravelNexus\Drivers\Amazon;
 
-use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Adnan\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
-use Adnan\LaravelNexus\DataTransferObjects\RateLimitConfig;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -177,9 +177,9 @@ class AmazonDriver implements InventoryDriver
         return $this->getWebhookVerifier()->verify($request);
     }
 
-    public function getWebhookVerifier(): \Adnan\LaravelNexus\Contracts\WebhookVerifier
+    public function getWebhookVerifier(): \Malikad778\LaravelNexus\Contracts\WebhookVerifier
     {
-        return new \Adnan\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
+        return new \Malikad778\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
     }
 
     public function parseWebhookPayload(Request $request): NexusInventoryUpdate
@@ -215,3 +215,4 @@ class AmazonDriver implements InventoryDriver
         return 'amazon';
     }
 }
+

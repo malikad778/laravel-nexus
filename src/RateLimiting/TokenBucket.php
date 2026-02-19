@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\RateLimiting;
+namespace Malikad778\LaravelNexus\RateLimiting;
 
 use Illuminate\Support\Facades\Redis;
 
@@ -60,3 +60,4 @@ LUA;
         return (bool) $result;
     }
 }
+

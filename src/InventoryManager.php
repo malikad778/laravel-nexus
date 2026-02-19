@@ -1,9 +1,9 @@
 <?php
 
-namespace Adnan\LaravelNexus;
+namespace Malikad778\LaravelNexus;
 
-use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Adnan\LaravelNexus\Drivers\Shopify\ShopifyDriver;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\Drivers\Shopify\ShopifyDriver;
 use Illuminate\Support\Manager;
 
 class InventoryManager extends Manager
@@ -59,22 +59,23 @@ class InventoryManager extends Manager
 
     public function createWooCommerceDriver(): InventoryDriver
     {
-        return new \Adnan\LaravelNexus\Drivers\WooCommerce\WooCommerceDriver(
+        return new \Malikad778\LaravelNexus\Drivers\WooCommerce\WooCommerceDriver(
             array_merge(config('nexus.drivers.woocommerce', []), $this->context)
         );
     }
 
     public function createAmazonDriver(): InventoryDriver
     {
-        return new \Adnan\LaravelNexus\Drivers\Amazon\AmazonDriver(
+        return new \Malikad778\LaravelNexus\Drivers\Amazon\AmazonDriver(
             array_merge(config('nexus.drivers.amazon', []), $this->context)
         );
     }
 
     public function createEtsyDriver(): InventoryDriver
     {
-        return new \Adnan\LaravelNexus\Drivers\Etsy\EtsyDriver(
+        return new \Malikad778\LaravelNexus\Drivers\Etsy\EtsyDriver(
             array_merge(config('nexus.drivers.etsy', []), $this->context)
         );
     }
 }
+

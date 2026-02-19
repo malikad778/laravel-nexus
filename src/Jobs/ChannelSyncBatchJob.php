@@ -1,11 +1,11 @@
 <?php
 
-namespace Adnan\LaravelNexus\Jobs;
+namespace Malikad778\LaravelNexus\Jobs;
 
-use Adnan\LaravelNexus\Events\AfterInventorySync;
-use Adnan\LaravelNexus\Events\BeforeInventorySync;
-use Adnan\LaravelNexus\Events\InventorySyncFailed;
-use Adnan\LaravelNexus\Models\ChannelMapping;
+use Malikad778\LaravelNexus\Events\AfterInventorySync;
+use Malikad778\LaravelNexus\Events\BeforeInventorySync;
+use Malikad778\LaravelNexus\Events\InventorySyncFailed;
+use Malikad778\LaravelNexus\Models\ChannelMapping;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -72,3 +72,4 @@ class ChannelSyncBatchJob implements ShouldQueue
         );
     }
 }
+

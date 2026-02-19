@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\DataTransferObjects;
+namespace Malikad778\LaravelNexus\DataTransferObjects;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
@@ -133,3 +133,4 @@ class NexusProduct implements Arrayable
         ];
     }
 }
+

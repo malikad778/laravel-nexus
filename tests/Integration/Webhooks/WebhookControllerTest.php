@@ -1,12 +1,12 @@
 <?php
 
-use Adnan\LaravelNexus\Events\WebhookReceived;
+use Malikad778\LaravelNexus\Events\WebhookReceived;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 
-class WebhookControllerTest extends \Adnan\LaravelNexus\Tests\TestCase
+class WebhookControllerTest extends \Malikad778\LaravelNexus\Tests\TestCase
 {
     protected function setUp(): void
     {
@@ -55,7 +55,7 @@ class WebhookControllerTest extends \Adnan\LaravelNexus\Tests\TestCase
         });
 
         // Check InventoryUpdated Event
-        Event::assertDispatched(\Adnan\LaravelNexus\Events\InventoryUpdated::class, function ($event) {
+        Event::assertDispatched(\Malikad778\LaravelNexus\Events\InventoryUpdated::class, function ($event) {
             return $event->channel === 'shopify' &&
                    $event->product->id === '123456';
         });
@@ -80,3 +80,4 @@ class WebhookControllerTest extends \Adnan\LaravelNexus\Tests\TestCase
         expect($log->exception)->toContain('Invalid webhook signature');
     }
 }
+

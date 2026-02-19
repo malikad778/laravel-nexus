@@ -1,8 +1,8 @@
 <?php
 
-namespace Adnan\LaravelNexus\Tests;
+namespace Malikad778\LaravelNexus\Tests;
 
-use Adnan\LaravelNexus\NexusServiceProvider;
+use Malikad778\LaravelNexus\NexusServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
 
@@ -20,7 +20,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'Adnan\\LaravelNexus\\Database\\Factories\\'.class_basename($modelName).'Factory'
+            fn (string $modelName) => 'Malikad778\\LaravelNexus\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -58,3 +58,4 @@ class TestCase extends Orchestra
         $migration->up();
     }
 }
+

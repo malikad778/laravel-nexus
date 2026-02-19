@@ -1,6 +1,6 @@
 <?php
 
-use Adnan\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\Facades\Nexus;
 use Illuminate\Support\Facades\Http;
 
 it('can update inventory on amazon', function () {
@@ -50,3 +50,4 @@ it('can update inventory on amazon', function () {
         return $isApiCall && $hasMethod && $hasTokenHeader && $authHeaderContainsAws4;
     });
 });
+

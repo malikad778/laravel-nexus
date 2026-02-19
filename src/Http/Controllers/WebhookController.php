@@ -1,9 +1,9 @@
 <?php
 
-namespace Adnan\LaravelNexus\Http\Controllers;
+namespace Malikad778\LaravelNexus\Http\Controllers;
 
-use Adnan\LaravelNexus\Events\WebhookReceived;
-use Adnan\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
+use Malikad778\LaravelNexus\Events\WebhookReceived;
+use Malikad778\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +44,7 @@ class WebhookController extends Controller
 
         // 3. Parse and Dispatch InventoryUpdated (Domain Level)
         try {
-            $driver = \Adnan\LaravelNexus\Facades\Nexus::driver($channel);
+            $driver = \Malikad778\LaravelNexus\Facades\Nexus::driver($channel);
             $updateDto = $driver->parseWebhookPayload($request);
 
             // Fetch product to get previous quantity
@@ -53,7 +53,7 @@ class WebhookController extends Controller
                 $previousQuantity = $product->quantity ?? 0;
             } catch (\Exception $e) {
                 // If we can't fetch, create a basic DTO from the update
-                $product = new \Adnan\LaravelNexus\DataTransferObjects\NexusProduct(
+                $product = new \Malikad778\LaravelNexus\DataTransferObjects\NexusProduct(
                     id: $updateDto->remoteId,
                     name: 'Product from Webhook',
                     sku: $updateDto->sku,
@@ -64,7 +64,7 @@ class WebhookController extends Controller
                 $previousQuantity = 0;
             }
 
-            \Adnan\LaravelNexus\Events\InventoryUpdated::dispatch(
+            \Malikad778\LaravelNexus\Events\InventoryUpdated::dispatch(
                 $channel,
                 $product,
                 $previousQuantity,
@@ -86,3 +86,4 @@ class WebhookController extends Controller
         return response()->json(['status' => 'received']);
     }
 }
+

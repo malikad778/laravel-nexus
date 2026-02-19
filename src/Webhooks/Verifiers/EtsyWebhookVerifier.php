@@ -1,8 +1,8 @@
 <?php
 
-namespace Adnan\LaravelNexus\Webhooks\Verifiers;
+namespace Malikad778\LaravelNexus\Webhooks\Verifiers;
 
-use Adnan\LaravelNexus\Contracts\WebhookVerifier;
+use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 use Illuminate\Http\Request;
 
 class EtsyWebhookVerifier implements WebhookVerifier
@@ -32,3 +32,4 @@ class EtsyWebhookVerifier implements WebhookVerifier
         return hash_equals($signature, $calculated);
     }
 }
+

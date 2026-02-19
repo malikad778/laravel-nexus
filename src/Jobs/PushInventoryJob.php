@@ -1,9 +1,9 @@
 <?php
 
-namespace Adnan\LaravelNexus\Jobs;
+namespace Malikad778\LaravelNexus\Jobs;
 
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\RateLimiting\TokenBucket;
+use Malikad778\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,7 +41,7 @@ class PushInventoryJob implements ShouldBeUnique, ShouldQueue
         $rate = config("nexus.rate_limits.{$this->channel}.rate", 1.0);
 
         if (! $limiter->acquire($this->channel, $capacity, $rate)) {
-            \Adnan\LaravelNexus\Events\ChannelThrottled::dispatch($this->channel, 5);
+            \Malikad778\LaravelNexus\Events\ChannelThrottled::dispatch($this->channel, 5);
             $this->release(5); // Release back to queue with delay
 
             return;
@@ -60,7 +60,7 @@ class PushInventoryJob implements ShouldBeUnique, ShouldQueue
 
         if ($driver->updateInventory($this->remoteId, $this->quantity)) {
             if ($product) {
-                \Adnan\LaravelNexus\Events\InventoryUpdated::dispatch(
+                \Malikad778\LaravelNexus\Events\InventoryUpdated::dispatch(
                     $this->channel,
                     $product,
                     $previousQuantity,
@@ -74,9 +74,10 @@ class PushInventoryJob implements ShouldBeUnique, ShouldQueue
 
     public function failed(\Throwable $exception): void
     {
-        \Adnan\LaravelNexus\Events\InventorySyncFailed::dispatch(
+        \Malikad778\LaravelNexus\Events\InventorySyncFailed::dispatch(
             $this->channel,
             $exception->getMessage()
         );
     }
 }
+
