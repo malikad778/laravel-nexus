@@ -8,6 +8,62 @@
 -   **Webhooks**: Verified, secure webhook handling for real-time updates.
 -   **Dashboard**: A focused administrative interface to monitor channel status and sync health.
 
+## ❓ Why Laravel Nexus?
+
+Building multi-channel infrastructure is **hard**. You have to deal with:
+*   Different API standards (REST vs GraphQL vs SOAP).
+*   Complex authentication flows (OAuth2, HMAC, AWS Signature v4).
+*   Rate limiting and race conditions.
+*   Keeping local database in sync with remote platforms.
+
+**Laravel Nexus** solves this by providing a standardized, opinionated layer on top of these chaotic APIs. You write code once against the `InventoryDriver` interface, and Nexus handles the dirty work of communicating with Shopify, Amazon, or Etsy.
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    A[Your App] -->|Nexus::driver| B(Nexus Manager)
+    B --> C{Channel Driver}
+    C -->|REST/GraphQL| D[Shopify]
+    C -->|SP-API| E[Amazon]
+    C -->|REST v3| F[WooCommerce]
+    
+    G[Webhooks] -->|Signed Payload| H[WebhookController]
+    H -->|Dispatch| I[Events & Jobs]
+    I -->|Update| J[Local Database]
+```
+
+## 🛠️ Advanced Usage
+
+### Custom Drivers
+You can extend Nexus with your own drivers. Just implement the `InventoryDriver` interface:
+
+```php
+use Adnan\LaravelNexus\Contracts\InventoryDriver;
+
+class eBayDriver implements InventoryDriver {
+    // Implement getProducts, updateInventory, etc.
+}
+```
+
+Then register it in your `AppServiceProvider`:
+
+```php
+Nexus::extend('ebay', function ($app) {
+    return new eBayDriver($app['config']['nexus.drivers.ebay']);
+});
+```
+
+### Rate Limiting Strategies
+Nexus uses a **Token Bucket** algorithm backed by Redis to respect API limits. You can customize this in `config/nexus.php`:
+
+```php
+'rate_limits' => [
+    'shopify' => ['capacity' => 40, 'rate' => 2], // 2 requests/sec, burst to 40
+    'amazon' => ['capacity' => 15, 'rate' => 5],
+],
+```
+
 ## Installation
 
 You can install the package via composer:
