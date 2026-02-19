@@ -2,14 +2,14 @@
 
 namespace Adnan\LaravelNexus\Contracts;
 
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Enumerable;
 
 interface InventoryDriver
 {
     /**
      * Fetch products modified since the given timestamp.
-     * 
+     *
      * @return Enumerable<int, \Adnan\LaravelNexus\DataTransferObjects\NexusProduct>
      */
     public function getProducts(Carbon $since): Enumerable;

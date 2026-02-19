@@ -9,15 +9,14 @@ class TokenBucket
     /**
      * Attempt to acquire tokens from the bucket.
      *
-     * @param string $key Identifier for the bucket (e.g., channel name)
-     * @param int $capacity Max tokens in the bucket
-     * @param float $rate Tokens added per second
-     * @param int $cost Tokens required for this operation
-     * @return bool
+     * @param  string  $key  Identifier for the bucket (e.g., channel name)
+     * @param  int  $capacity  Max tokens in the bucket
+     * @param  float  $rate  Tokens added per second
+     * @param  int  $cost  Tokens required for this operation
      */
     public function acquire(string $key, int $capacity, float $rate, int $cost = 1): bool
     {
-        $script = <<<LUA
+        $script = <<<'LUA'
             local key = KEYS[1]
             local capacity = tonumber(ARGV[1])
             local rate = tonumber(ARGV[2])

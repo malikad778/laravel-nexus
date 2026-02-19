@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Http;
-use Adnan\LaravelNexus\Facades\Nexus;
 use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Adnan\LaravelNexus\Facades\Nexus;
+use Illuminate\Support\Facades\Http;
 
 it('can fetch products from woocommerce', function () {
     config()->set('nexus.drivers.woocommerce', [
@@ -19,7 +19,7 @@ it('can fetch products from woocommerce', function () {
                 'sku' => 'WOO-ALBUM',
                 'price' => '15.00',
                 'stock_quantity' => 20,
-            ]
+            ],
         ], 200),
     ]);
 

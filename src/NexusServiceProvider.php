@@ -2,9 +2,9 @@
 
 namespace Adnan\LaravelNexus;
 
+use Adnan\LaravelNexus\Commands\NexusCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Adnan\LaravelNexus\Commands\NexusCommand;
 
 class NexusServiceProvider extends PackageServiceProvider
 {
@@ -55,24 +55,24 @@ class NexusServiceProvider extends PackageServiceProvider
     protected function registerRoutes()
     {
         \Illuminate\Support\Facades\Route::macro('nexusWebhooks', function (string $prefix = 'nexus/webhooks') {
-            \Illuminate\Support\Facades\Route::post($prefix . '/{channel}', [\Adnan\LaravelNexus\Http\Controllers\WebhookController::class, 'handle'])
+            \Illuminate\Support\Facades\Route::post($prefix.'/{channel}', [\Adnan\LaravelNexus\Http\Controllers\WebhookController::class, 'handle'])
                 ->name('nexus.webhooks');
         });
 
         \Illuminate\Support\Facades\Route::macro('nexusDashboard', function (string $prefix = 'nexus') {
-             \Illuminate\Support\Facades\Route::group([
+            \Illuminate\Support\Facades\Route::group([
                 'prefix' => $prefix,
                 'middleware' => config('nexus.dashboard_middleware', ['web']),
-             ], function () {
+            ], function () {
                 \Illuminate\Support\Facades\Route::get('/', [\Adnan\LaravelNexus\Http\Controllers\DashboardController::class, 'index'])->name('nexus.dashboard');
                 \Illuminate\Support\Facades\Route::get('/jobs', [\Adnan\LaravelNexus\Http\Controllers\DashboardController::class, 'jobs'])->name('nexus.dashboard.jobs');
                 \Illuminate\Support\Facades\Route::get('/webhooks', [\Adnan\LaravelNexus\Http\Controllers\DashboardController::class, 'webhooks'])->name('nexus.dashboard.webhooks');
                 \Illuminate\Support\Facades\Route::get('/dlq', [\Adnan\LaravelNexus\Http\Controllers\DashboardController::class, 'dlq'])->name('nexus.dashboard.dlq');
-                
+
                 // Actions
                 \Illuminate\Support\Facades\Route::post('/dlq/{id}/retry', [\Adnan\LaravelNexus\Http\Controllers\DashboardController::class, 'retryJob'])->name('nexus.dashboard.dlq.retry');
                 \Illuminate\Support\Facades\Route::delete('/dlq/{id}', [\Adnan\LaravelNexus\Http\Controllers\DashboardController::class, 'dismissJob'])->name('nexus.dashboard.dlq.dismiss');
-             });
+            });
         });
     }
 }

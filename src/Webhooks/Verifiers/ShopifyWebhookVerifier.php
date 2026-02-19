@@ -11,8 +11,8 @@ class ShopifyWebhookVerifier implements WebhookVerifier
     {
         $signature = $request->header('X-Shopify-Hmac-Sha256');
         $secret = Config::get('nexus.drivers.shopify.access_token'); // Usually it's a separate WEBHOOK_SECRET, but leveraging existing config or env.
-        
-        // Spec check: Does Shopify use Access Token or Client Secret for webhooks? 
+
+        // Spec check: Does Shopify use Access Token or Client Secret for webhooks?
         // It uses "Shared Secret" (Client Secret) or a specific Webhook Signing Key.
         // Let's assume we add a 'webhook_secret' to config key.
         $secret = Config::get('nexus.drivers.shopify.webhook_secret') ?? Config::get('nexus.drivers.shopify.client_secret');

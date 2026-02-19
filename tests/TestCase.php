@@ -2,9 +2,9 @@
 
 namespace Adnan\LaravelNexus\Tests;
 
+use Adnan\LaravelNexus\NexusServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Adnan\LaravelNexus\NexusServiceProvider;
 
 class TestCase extends Orchestra
 {

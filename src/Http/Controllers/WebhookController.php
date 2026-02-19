@@ -2,18 +2,18 @@
 
 namespace Adnan\LaravelNexus\Http\Controllers;
 
+use Adnan\LaravelNexus\Events\WebhookReceived;
+use Adnan\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Adnan\LaravelNexus\Events\WebhookReceived;
-use Adnan\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
 
 class WebhookController extends Controller
 {
     public function __construct()
     {
-        // Apply middleware. 
-        // Note: In Laravel 11 package, middleware registration might differ, 
+        // Apply middleware.
+        // Note: In Laravel 11 package, middleware registration might differ,
         // but this standard approach works for most.
         $this->middleware(VerifyNexusWebhookSignature::class);
     }
@@ -23,8 +23,8 @@ class WebhookController extends Controller
         // Log the webhook
         $logId = DB::table('nexus_webhook_logs')->insertGetId([
             'channel' => $channel,
-            'topic' => $request->header('X-Shopify-Topic') 
-                ?? $request->header('X-GitHub-Event') 
+            'topic' => $request->header('X-Shopify-Topic')
+                ?? $request->header('X-GitHub-Event')
                 ?? $request->json('Type') // Amazon SNS Type
                 ?? 'unknown',
             'payload' => json_encode($request->all()),

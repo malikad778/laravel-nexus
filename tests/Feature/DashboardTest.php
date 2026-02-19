@@ -1,15 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
-use Adnan\LaravelNexus\Http\Controllers\DashboardController;
+use Illuminate\Support\Facades\Route;
 
 class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // Register routes manually for testing if not auto-registered or to ensure they exist
         Route::nexusDashboard('nexus');
     }
@@ -31,7 +30,7 @@ class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
             'payload' => '{}',
             'created_at' => now(),
         ]);
-        
+
         $response = $this->get('/nexus/webhooks');
         $response->assertOk();
         $response->assertSee('Shopify');
@@ -47,7 +46,7 @@ class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
             'exception' => 'Error',
             'created_at' => now(),
         ]);
-        
+
         $response = $this->get('/nexus/dlq');
         $response->assertOk();
         $response->assertSee('SomeJob');
@@ -67,7 +66,7 @@ class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
     public function it_can_render_jobs_page_with_batches()
     {
         // Create table manually for this test
-        if (!\Illuminate\Support\Facades\Schema::hasTable('job_batches')) {
+        if (! \Illuminate\Support\Facades\Schema::hasTable('job_batches')) {
             \Illuminate\Support\Facades\Schema::create('job_batches', function ($table) {
                 $table->string('id')->primary();
                 $table->string('name');
@@ -107,10 +106,10 @@ class DashboardTest extends \Adnan\LaravelNexus\Tests\TestCase
             'status' => 'failed',
             'created_at' => now(),
         ]);
-        
+
         $response = $this->delete("/nexus/dlq/{$id}");
         $response->assertRedirect();
-        
+
         expect(DB::table('nexus_dead_letter_queue')->find($id))->toBeNull();
     }
 }

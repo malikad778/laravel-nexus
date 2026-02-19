@@ -3,10 +3,10 @@
 namespace Adnan\LaravelNexus\Drivers\Shopify;
 
 use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Illuminate\Support\Enumerable;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
 use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Enumerable;
+use Illuminate\Support\Facades\Http;
 
 class ShopifyDriver implements InventoryDriver
 {

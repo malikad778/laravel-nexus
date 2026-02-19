@@ -2,7 +2,6 @@
 
 use Adnan\LaravelNexus\Contracts\InventoryDriver;
 use Adnan\LaravelNexus\Drivers\Shopify\ShopifyDriver;
-use Adnan\LaravelNexus\InventoryManager;
 use Adnan\LaravelNexus\Facades\Nexus;
 
 it('can resolve the default driver', function () {

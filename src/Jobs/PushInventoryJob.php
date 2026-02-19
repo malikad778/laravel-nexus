@@ -2,20 +2,21 @@
 
 namespace Adnan\LaravelNexus\Jobs;
 
+use Adnan\LaravelNexus\Facades\Nexus;
+use Adnan\LaravelNexus\RateLimiting\TokenBucket;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\RateLimiting\TokenBucket;
 
-class PushInventoryJob implements ShouldQueue, ShouldBeUnique
+class PushInventoryJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 3;
+
     public $backoff = [10, 30, 60];
 
     public function __construct(
@@ -41,11 +42,12 @@ class PushInventoryJob implements ShouldQueue, ShouldBeUnique
 
         if (! $limiter->acquire($this->channel, $capacity, $rate)) {
             $this->release(5); // Release back to queue with delay
+
             return;
         }
 
         $driver = Nexus::driver($this->channel);
-        
+
         if (! $driver->updateInventory($this->remoteId, $this->quantity)) {
             $this->fail(new \Exception("Failed to update inventory for {$this->channel}: {$this->remoteId}"));
         }

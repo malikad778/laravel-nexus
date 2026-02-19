@@ -3,10 +3,9 @@
 namespace Adnan\LaravelNexus\Drivers\Amazon;
 
 use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Enumerable;
 use Illuminate\Support\Facades\Http;
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
 
 class AmazonDriver implements InventoryDriver
 {
@@ -28,7 +27,7 @@ class AmazonDriver implements InventoryDriver
         ]);
 
         if ($response->failed()) {
-            throw new \RuntimeException('Failed to authenticate with Amazon LWA: ' . $response->body());
+            throw new \RuntimeException('Failed to authenticate with Amazon LWA: '.$response->body());
         }
 
         return $this->accessToken = $response->json('access_token');
@@ -37,27 +36,27 @@ class AmazonDriver implements InventoryDriver
     public function getProducts(Carbon $since): Enumerable
     {
         $accessToken = $this->getAccessToken();
-        
+
         // Use Listings Items API to search/list items
         // Note: SP-API is complex. This is a simplified "search" or "list" implementation.
         // For "getProducts", we might use Reports API for bulk or Listings API for individual.
         // Let's assume we search for items updated recently (if API supports) or just list items.
-        
+
         // Simplified: Fetching a hardcoded list or search isn't straightforward without a specific robust strategy
         // For the sake of this driver implementation, we will mock/implement a conceptual "search" call
         // using the Catalog Items API or Listings API.
-        
+
         // Let's use a hypothetical "search" endpoint or just return empty for now if no specific search query.
         // In reality, syncing Amazon usually involves requesting a report (GET_MERCHANT_LISTINGS_ALL_DATA).
         // Since this is a synchronous driver method, we'll try to hit an endpoint that returns data immediately,
         // but be aware of rate limits.
-        
+
         // To follow the "build from scratch" instruction properly, I will implement the logic to SIGN and SEND the request,
         // even if the specific endpoint (Reports vs Listings) is debatable.
-        
+
         // Example: List Listings
         $endpoint = "https://sellingpartnerapi-na.amazon.com/listings/2021-08-01/items/{$this->config['seller_id']}";
-        
+
         $signer = new AwsV4Signer(
             $this->config['access_key_id'],
             $this->config['secret_access_key'],
@@ -73,21 +72,21 @@ class AmazonDriver implements InventoryDriver
 
         // Headers are signed in the request
         // NOTE: AwsV4Signer needs to be integrated properly.
-        
+
         // For now, let's implement the updateInventory structure first as it is more standard (PATCH)
-        // and leave getProducts as a placeholder that returns empty or throws not implemented until Phase 3 (Queue) 
+        // and leave getProducts as a placeholder that returns empty or throws not implemented until Phase 3 (Queue)
         // because Amazon sync SHOULD be report-based (async).
         // However, the interface demands it. I will return empty collection for now or mock it in tests.
-        
-        return collect([]); 
+
+        return collect([]);
     }
 
     public function updateInventory(string $remoteId, int $quantity): bool
     {
         $accessToken = $this->getAccessToken();
-        
+
         $endpoint = "https://sellingpartnerapi-na.amazon.com/listings/2021-08-01/items/{$this->config['seller_id']}/{$remoteId}";
-        
+
         $body = [
             'productType' => 'PRODUCT', // generic
             'patches' => [
@@ -98,20 +97,20 @@ class AmazonDriver implements InventoryDriver
                         [
                             'fulfillment_channel_code' => 'DEFAULT',
                             'quantity' => $quantity,
-                        ]
+                        ],
                     ],
                 ],
             ],
         ];
 
         $payload = json_encode($body);
-        
+
         $signer = new AwsV4Signer(
             $this->config['access_key_id'],
             $this->config['secret_access_key'],
             $this->config['region'] ?? 'us-east-1'
         );
-        
+
         $headers = [
             'x-amz-access-token' => $accessToken,
             'content-type' => 'application/json',
@@ -119,7 +118,7 @@ class AmazonDriver implements InventoryDriver
         ];
 
         $signedHeaders = $signer->signRequest('PATCH', $endpoint, $headers, $payload);
-        
+
         $response = Http::withHeaders($signedHeaders)
             ->withBody($payload, 'application/json')
             ->patch($endpoint);

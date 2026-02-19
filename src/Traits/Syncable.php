@@ -2,8 +2,8 @@
 
 namespace Adnan\LaravelNexus\Traits;
 
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Adnan\LaravelNexus\Models\ChannelMapping;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait Syncable
 {

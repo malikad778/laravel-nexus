@@ -14,6 +14,5 @@ class WebhookReceived
         public array $payload,
         public array $headers,
         public int $logId
-    ) {
-    }
+    ) {}
 }

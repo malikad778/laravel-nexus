@@ -3,8 +3,8 @@
 namespace Adnan\LaravelNexus\Webhooks\Verifiers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class AmazonWebhookVerifier implements WebhookVerifier
@@ -19,16 +19,18 @@ class AmazonWebhookVerifier implements WebhookVerifier
         }
 
         $certUrl = $payload['SigningCertURL'];
-        
+
         // Security check: Ensure cert URL is actually from Amazon
         if (! preg_match('/^https:\/\/sns\.[a-zA-Z0-9-]{3,}\.amazonaws\.com(\.cn)?\//', $certUrl)) {
             Log::warning("Invalid SNS Certificate URL: {$certUrl}");
+
             return false;
         }
 
         // Get Certificate (Cache it)
-        $certificate = Cache::remember('nexus:sns:cert:' . md5($certUrl), 3600, function () use ($certUrl) {
+        $certificate = Cache::remember('nexus:sns:cert:'.md5($certUrl), 3600, function () use ($certUrl) {
             $response = Http::get($certUrl);
+
             return $response->successful() ? $response->body() : null;
         });
 
@@ -38,15 +40,15 @@ class AmazonWebhookVerifier implements WebhookVerifier
 
         // Reconstruct the string to sign
         $stringToSign = $this->buildStringToSign($payload);
-        
+
         // Verify signature
         $publicKey = openssl_get_publickey($certificate);
         if (! $publicKey) {
-             return false;
+            return false;
         }
-        
+
         $signature = base64_decode($payload['Signature']);
-        
+
         $result = openssl_verify($stringToSign, $signature, $publicKey, OPENSSL_ALGO_SHA1);
 
         return $result === 1;

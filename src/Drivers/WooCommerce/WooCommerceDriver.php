@@ -3,10 +3,10 @@
 namespace Adnan\LaravelNexus\Drivers\WooCommerce;
 
 use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Illuminate\Support\Enumerable;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Http;
 use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Enumerable;
+use Illuminate\Support\Facades\Http;
 
 class WooCommerceDriver implements InventoryDriver
 {
@@ -19,7 +19,7 @@ class WooCommerceDriver implements InventoryDriver
             $this->config['consumer_secret']
         )->get("{$this->config['store_url']}/wp-json/wc/v3/products", [
             'modified_after' => $since->toIso8601String(),
-            'per_page' => 100, 
+            'per_page' => 100,
         ]);
 
         if ($response->failed()) {
@@ -30,13 +30,13 @@ class WooCommerceDriver implements InventoryDriver
             ->map(function ($product) {
                 // If product is variable, we might need to fetch variations separately
                 // For simplicity, let's assume simple products for now or main product
-                // But NexusProduct expects "sku". 
-                
+                // But NexusProduct expects "sku".
+
                 // Note: Variations handling for 'variable' type is not yet implemented.
                 if (($product['type'] ?? 'simple') === 'variable') {
                     // Log::warning("Variable product {$product['id']} encountered in WooCommerce. Variations not fully supported.");
                 }
-                
+
                 return new NexusProduct(
                     sku: $product['sku'] ?? '',
                     name: $product['name'],

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Bus;
 use Adnan\LaravelNexus\Jobs\CatalogSyncJob;
 use Adnan\LaravelNexus\Jobs\ChannelSyncBatchJob;
+use Illuminate\Support\Facades\Bus;
 
 it('dispatches batch job for each channel', function () {
     config()->set('nexus.drivers', [

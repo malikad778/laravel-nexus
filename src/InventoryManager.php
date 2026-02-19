@@ -2,9 +2,9 @@
 
 namespace Adnan\LaravelNexus;
 
-use Illuminate\Support\Manager;
 use Adnan\LaravelNexus\Contracts\InventoryDriver;
 use Adnan\LaravelNexus\Drivers\Shopify\ShopifyDriver;
+use Illuminate\Support\Manager;
 
 class InventoryManager extends Manager
 {
