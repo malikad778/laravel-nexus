@@ -2,9 +2,9 @@
 
 namespace Malikad778\LaravelNexus\Webhooks\Verifiers;
 
-use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 
 class ShopifyWebhookVerifier implements WebhookVerifier
 {
@@ -27,4 +27,3 @@ class ShopifyWebhookVerifier implements WebhookVerifier
         return hash_equals($signature, $calculated);
     }
 }
-

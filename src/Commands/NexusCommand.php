@@ -17,4 +17,3 @@ class NexusCommand extends Command
         return self::SUCCESS;
     }
 }
-

@@ -17,4 +17,3 @@ class NexusRateLimitLog extends Model
         'was_limited' => 'boolean',
     ];
 }
-

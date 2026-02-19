@@ -2,14 +2,14 @@
 
 namespace Malikad778\LaravelNexus\Jobs;
 
-use Malikad778\LaravelNexus\Facades\Nexus;
-use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Malikad778\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 
 class PushInventoryJob implements ShouldBeUnique, ShouldQueue
 {
@@ -80,4 +80,3 @@ class PushInventoryJob implements ShouldBeUnique, ShouldQueue
         );
     }
 }
-

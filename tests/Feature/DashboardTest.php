@@ -136,4 +136,3 @@ class DashboardTest extends \Malikad778\LaravelNexus\Tests\TestCase
         expect(DB::table('nexus_dead_letter_queue')->find($id))->toBeNull();
     }
 }
-

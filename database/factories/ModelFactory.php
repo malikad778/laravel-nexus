@@ -17,4 +17,3 @@ class ModelFactory extends Factory
     }
 }
 */
-

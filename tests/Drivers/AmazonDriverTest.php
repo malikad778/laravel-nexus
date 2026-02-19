@@ -1,7 +1,7 @@
 <?php
 
-use Malikad778\LaravelNexus\Facades\Nexus;
 use Illuminate\Support\Facades\Http;
+use Malikad778\LaravelNexus\Facades\Nexus;
 
 it('can update inventory on amazon', function () {
     config()->set('nexus.drivers.amazon', [
@@ -50,4 +50,3 @@ it('can update inventory on amazon', function () {
         return $isApiCall && $hasMethod && $hasTokenHeader && $authHeaderContainsAws4;
     });
 });
-

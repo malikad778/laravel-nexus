@@ -1,15 +1,15 @@
 <?php
 
-use Malikad778\LaravelNexus\Events\AfterInventorySync;
-use Malikad778\LaravelNexus\Events\BeforeInventorySync;
-use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
-use Malikad778\LaravelNexus\Jobs\PushInventoryJob;
-use Malikad778\LaravelNexus\Models\ChannelMapping;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
+use Malikad778\LaravelNexus\Events\AfterInventorySync;
+use Malikad778\LaravelNexus\Events\BeforeInventorySync;
+use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
+use Malikad778\LaravelNexus\Jobs\PushInventoryJob;
+use Malikad778\LaravelNexus\Models\ChannelMapping;
 
 uses(RefreshDatabase::class);
 
@@ -57,4 +57,3 @@ it('dispatches events and pushes inventory for existing mappings', function () {
         return $event->channel === 'shopify' && $event->productsSynced === 1;
     });
 });
-

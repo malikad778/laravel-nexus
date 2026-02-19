@@ -26,4 +26,3 @@ class WebhookLog extends Component
         ]);
     }
 }
-

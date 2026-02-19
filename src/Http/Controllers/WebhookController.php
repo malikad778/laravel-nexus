@@ -2,11 +2,11 @@
 
 namespace Malikad778\LaravelNexus\Http\Controllers;
 
-use Malikad778\LaravelNexus\Events\WebhookReceived;
-use Malikad778\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Malikad778\LaravelNexus\Events\WebhookReceived;
+use Malikad778\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
 
 class WebhookController extends Controller
 {
@@ -86,4 +86,3 @@ class WebhookController extends Controller
         return response()->json(['status' => 'received']);
     }
 }
-

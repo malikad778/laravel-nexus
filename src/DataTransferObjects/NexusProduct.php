@@ -133,4 +133,3 @@ class NexusProduct implements Arrayable
         ];
     }
 }
-

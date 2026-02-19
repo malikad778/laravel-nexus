@@ -16,4 +16,3 @@ class WebhookReceived
         public int $logId
     ) {}
 }
-

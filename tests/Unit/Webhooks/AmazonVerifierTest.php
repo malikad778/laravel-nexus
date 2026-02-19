@@ -1,8 +1,8 @@
 <?php
 
-use Malikad778\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
 
 it('verifies valid amazon sns signature', function () {
     // Generate a valid 2048-bit RSA key for testing
@@ -72,4 +72,3 @@ it('rejects invalid amazon sns signature', function () {
     $verifier = new AmazonWebhookVerifier;
     expect($verifier->verify($request))->toBeFalse();
 });
-

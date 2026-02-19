@@ -24,4 +24,3 @@ class ChannelMapping extends Model
         return $this->morphTo();
     }
 }
-

@@ -2,10 +2,10 @@
 
 namespace Malikad778\LaravelNexus\Builders;
 
+use Illuminate\Database\Eloquent\Model;
 use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
 use Malikad778\LaravelNexus\Facades\Nexus;
 use Malikad778\LaravelNexus\Jobs\PushInventoryJob;
-use Illuminate\Database\Eloquent\Model;
 
 class ProductSyncBuilder
 {
@@ -85,4 +85,3 @@ class ProductSyncBuilder
         return 'unknown';
     }
 }
-

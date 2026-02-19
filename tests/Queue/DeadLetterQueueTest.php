@@ -1,9 +1,9 @@
 <?php
 
-use Malikad778\LaravelNexus\Jobs\PushInventoryJob;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Malikad778\LaravelNexus\Jobs\PushInventoryJob;
 
 it('logs failed jobs to dlq table', function () {
     // 1. Setup the environment
@@ -41,4 +41,3 @@ it('logs failed jobs to dlq table', function () {
     expect($record->exception)->toContain('Test Failure');
     expect($record->status)->toBe('failed');
 });
-

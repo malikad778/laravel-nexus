@@ -15,4 +15,3 @@ class InventorySyncFailed
         public ?string $batchId = null
     ) {}
 }
-

@@ -2,11 +2,11 @@
 
 namespace Malikad778\LaravelNexus\Webhooks\Verifiers;
 
-use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 
 class AmazonWebhookVerifier implements WebhookVerifier
 {
@@ -79,4 +79,3 @@ class AmazonWebhookVerifier implements WebhookVerifier
         return $stringToSign;
     }
 }
-

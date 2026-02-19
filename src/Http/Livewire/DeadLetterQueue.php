@@ -2,9 +2,9 @@
 
 namespace Malikad778\LaravelNexus\Http\Livewire;
 
-use Malikad778\LaravelNexus\Models\NexusDeadLetterQueue;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Malikad778\LaravelNexus\Models\NexusDeadLetterQueue;
 
 class DeadLetterQueue extends Component
 {
@@ -38,4 +38,3 @@ class DeadLetterQueue extends Component
         ]);
     }
 }
-

@@ -2,12 +2,12 @@
 
 namespace Malikad778\LaravelNexus\Tests\Unit;
 
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
 use Malikad778\LaravelNexus\Builders\BatchBuilder;
 use Malikad778\LaravelNexus\Builders\CatalogSyncBuilder;
 use Malikad778\LaravelNexus\Facades\Nexus;
 use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
-use Illuminate\Bus\Batch;
-use Illuminate\Support\Facades\Bus;
 
 it('returns catalog sync builder', function () {
     expect(Nexus::catalog())->toBeInstanceOf(CatalogSyncBuilder::class);
@@ -46,4 +46,3 @@ it('batch builder dispatches batch with custom name', function () {
         return $batch->name === 'custom-audit-batch';
     });
 });
-

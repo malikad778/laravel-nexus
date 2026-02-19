@@ -1,7 +1,7 @@
 <?php
 
-use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 use Illuminate\Support\Facades\Redis;
+use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 
 it('can acquire tokens', function () {
     // Mock Redis::eval
@@ -31,4 +31,3 @@ it('fails when redis returns 0', function () {
 
     expect($result)->toBeFalse();
 });
-

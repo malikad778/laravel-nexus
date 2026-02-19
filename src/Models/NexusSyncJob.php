@@ -30,4 +30,3 @@ class NexusSyncJob extends Model
         'finished_at' => 'datetime',
     ];
 }
-

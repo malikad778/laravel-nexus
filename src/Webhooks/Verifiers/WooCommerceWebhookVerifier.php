@@ -2,8 +2,8 @@
 
 namespace Malikad778\LaravelNexus\Webhooks\Verifiers;
 
-use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 use Illuminate\Http\Request;
+use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 
 class WooCommerceWebhookVerifier implements WebhookVerifier
 {
@@ -23,4 +23,3 @@ class WooCommerceWebhookVerifier implements WebhookVerifier
         return hash_equals($signature, $calculated);
     }
 }
-

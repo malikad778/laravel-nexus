@@ -2,16 +2,16 @@
 
 namespace Malikad778\LaravelNexus\Jobs;
 
-use Malikad778\LaravelNexus\Events\AfterInventorySync;
-use Malikad778\LaravelNexus\Events\BeforeInventorySync;
-use Malikad778\LaravelNexus\Events\InventorySyncFailed;
-use Malikad778\LaravelNexus\Models\ChannelMapping;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Malikad778\LaravelNexus\Events\AfterInventorySync;
+use Malikad778\LaravelNexus\Events\BeforeInventorySync;
+use Malikad778\LaravelNexus\Events\InventorySyncFailed;
+use Malikad778\LaravelNexus\Models\ChannelMapping;
 use Throwable;
 
 class ChannelSyncBatchJob implements ShouldQueue
@@ -72,4 +72,3 @@ class ChannelSyncBatchJob implements ShouldQueue
         );
     }
 }
-

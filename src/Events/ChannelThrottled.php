@@ -25,4 +25,3 @@ class ChannelThrottled implements ShouldBroadcast
         return 'channel.throttled';
     }
 }
-

@@ -2,8 +2,8 @@
 
 namespace Malikad778\LaravelNexus\Http\Livewire;
 
-use Malikad778\LaravelNexus\Models\NexusSyncJob;
 use Livewire\Component;
+use Malikad778\LaravelNexus\Models\NexusSyncJob;
 
 class StatusGrid extends Component
 {
@@ -47,4 +47,3 @@ class StatusGrid extends Component
         ]);
     }
 }
-

@@ -35,4 +35,3 @@ class CatalogSyncJob implements ShouldQueue
         }
     }
 }
-

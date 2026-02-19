@@ -83,4 +83,3 @@ class NexusServiceProvider extends PackageServiceProvider
         });
     }
 }
-
