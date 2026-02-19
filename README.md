@@ -1,16 +1,10 @@
-# Laravel Nexus
+# Laravel Nexus 🚀
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/adnan/laravel-nexus.svg?style=flat-square)](https://packagist.org/packages/adnan/laravel-nexus)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/adnan/laravel-nexus/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/adnan/laravel-nexus/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/malikad778/laravel-nexus/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/malikad778/laravel-nexus/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/malikad778/laravel-nexus/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/malikad778/laravel-nexus/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/adnan/laravel-nexus.svg?style=flat-square)](https://packagist.org/packages/adnan/laravel-nexus)
 
-**Laravel Nexus** is a robust, multi-channel inventory management package for Laravel. It provides a unified interface to sync products and inventory across Shopify, WooCommerce, Amazon, and Etsy.
-
-## Features
-
--   **Multi-Channel Support**: unified `InventoryDriver` interface for all platforms.
--   **Robust Queue System**: Job batches, rate limiting (Token Bucket), and meaningful retries.
--   **Dead Letter Queue (DLQ)**: Capture and manage failed jobs with a built-in UI.
 -   **Webhooks**: Verified, secure webhook handling for real-time updates.
 -   **Dashboard**: A focused administrative interface to monitor channel status and sync health.
 
