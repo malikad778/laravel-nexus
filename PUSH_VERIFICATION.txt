@@ -1,0 +1,4 @@
+This is a verification file to confirm that git pushes are reaching the remote and files are visible.
+Pushed at: 2026-02-19 17:25 (server time)
+Commit: df76308
+Next local push should include this file.
