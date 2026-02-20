@@ -177,6 +177,12 @@ class AmazonDriver implements InventoryDriver
         return $this->getWebhookVerifier()->verify($request);
     }
 
+    public function extractWebhookTopic(Request $request): string
+    {
+        $content = json_decode($request->getContent(), true);
+        return $content['Type'] ?? 'unknown';
+    }
+
     public function getWebhookVerifier(): \Malikad778\LaravelNexus\Contracts\WebhookVerifier
     {
         return new \Malikad778\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;

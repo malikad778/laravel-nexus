@@ -31,6 +31,8 @@ interface InventoryDriver
 
     public function getWebhookVerifier(): WebhookVerifier;
 
+    public function extractWebhookTopic(Request $request): string;
+
     public function parseWebhookPayload(Request $request): NexusInventoryUpdate;
 
     public function getRateLimitConfig(): RateLimitConfig;

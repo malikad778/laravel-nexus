@@ -2,15 +2,14 @@
 
 namespace Malikad778\LaravelNexus\Http\Controllers;
 
-use Malikad778\LaravelNexus\Events\WebhookReceived;
 use Malikad778\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
+use Malikad778\LaravelNexus\Services\WebhookProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
 
 class WebhookController extends Controller
 {
-    public function __construct()
+    public function __construct(protected WebhookProcessor $processor)
     {
         // Apply middleware.
         // Note: In Laravel 11 package, middleware registration might differ,
@@ -20,70 +19,8 @@ class WebhookController extends Controller
 
     public function handle(Request $request, string $channel)
     {
-        // 1. Log the webhook
-        $logId = DB::table('nexus_webhook_logs')->insertGetId([
-            'channel' => $channel,
-            'topic' => $request->header('X-Shopify-Topic')
-                ?? $request->header('X-GitHub-Event')
-                ?? $request->json('Type') // Amazon SNS Type
-                ?? 'unknown',
-            'payload' => json_encode($request->all()),
-            'headers' => json_encode($request->headers->all()),
-            'status' => 'pending',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        // 2. Dispatch generic WebhookReceived (System Level)
-        WebhookReceived::dispatch(
-            $channel,
-            $request->all(),
-            $request->headers->all(),
-            $logId
-        );
-
-        // 3. Parse and Dispatch InventoryUpdated (Domain Level)
-        try {
-            $driver = \Malikad778\LaravelNexus\Facades\Nexus::driver($channel);
-            $updateDto = $driver->parseWebhookPayload($request);
-
-            // Fetch product to get previous quantity
-            try {
-                $product = $driver->fetchProduct($updateDto->remoteId);
-                $previousQuantity = $product->quantity ?? 0;
-            } catch (\Exception $e) {
-                // If we can't fetch, create a basic DTO from the update
-                $product = new \Malikad778\LaravelNexus\DataTransferObjects\NexusProduct(
-                    id: $updateDto->remoteId,
-                    name: 'Product from Webhook',
-                    sku: $updateDto->sku,
-                    price: null,
-                    quantity: $updateDto->quantity,
-                    variants: collect()
-                );
-                $previousQuantity = 0;
-            }
-
-            \Malikad778\LaravelNexus\Events\InventoryUpdated::dispatch(
-                $channel,
-                $product,
-                $previousQuantity,
-                $updateDto->quantity
-            );
-
-            DB::table('nexus_webhook_logs')->where('id', $logId)->update(['status' => 'processed']);
-
-        } catch (\Exception $e) {
-            DB::table('nexus_webhook_logs')->where('id', $logId)->update([
-                'status' => 'failed',
-                'exception' => $e->getMessage(),
-            ]);
-
-            // We don't fail the response, just log internally
-            // Or maybe we should return 500? Webhooks usually prefer 200 explicitly if received.
-        }
+        $this->processor->process($channel, $request);
 
         return response()->json(['status' => 'received']);
     }
 }
-

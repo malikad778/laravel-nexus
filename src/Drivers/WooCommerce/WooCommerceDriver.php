@@ -79,6 +79,11 @@ class WooCommerceDriver implements InventoryDriver
         return $this->getWebhookVerifier()->verify($request);
     }
 
+    public function extractWebhookTopic(Request $request): string
+    {
+        return $request->header('X-WC-Webhook-Topic') ?? 'unknown';
+    }
+
     public function getWebhookVerifier(): \Malikad778\LaravelNexus\Contracts\WebhookVerifier
     {
         return new \Malikad778\LaravelNexus\Webhooks\Verifiers\WooCommerceWebhookVerifier($this->config);

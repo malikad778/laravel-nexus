@@ -3,8 +3,18 @@
 namespace Malikad778\LaravelNexus;
 
 use Malikad778\LaravelNexus\Commands\NexusCommand;
+use Malikad778\LaravelNexus\Http\Controllers\WebhookController;
+use Malikad778\LaravelNexus\Http\Controllers\DashboardController;
+use Malikad778\LaravelNexus\Http\Livewire\StatusGrid;
+use Malikad778\LaravelNexus\Http\Livewire\WebhookLog;
+use Malikad778\LaravelNexus\Http\Livewire\DeadLetterQueue;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Queue\Events\JobFailed;
+use Livewire\Livewire;
+use Exception;
 
 class NexusServiceProvider extends PackageServiceProvider
 {
@@ -28,17 +38,17 @@ class NexusServiceProvider extends PackageServiceProvider
     public function packageBooted()
     {
         // Register Livewire Components (Must be in boot)
-        if (class_exists(\Livewire\Livewire::class)) {
-            \Livewire\Livewire::component('nexus-status-grid', Http\Livewire\StatusGrid::class);
-            \Livewire\Livewire::component('nexus-webhook-log', Http\Livewire\WebhookLog::class);
-            \Livewire\Livewire::component('nexus-dead-letter-queue', Http\Livewire\DeadLetterQueue::class);
+        if (class_exists(Livewire::class)) {
+            Livewire::component('nexus-status-grid', StatusGrid::class);
+            Livewire::component('nexus-webhook-log', WebhookLog::class);
+            Livewire::component('nexus-dead-letter-queue', DeadLetterQueue::class);
         }
 
-        $this->app['events']->listen(\Illuminate\Queue\Events\JobFailed::class, function ($event) {
+        $this->app['events']->listen(JobFailed::class, function ($event) {
             // Check if it's a Nexus job (namespace check)
             if (str_starts_with($event->job->resolveName(), 'Malikad778\LaravelNexus')) {
                 try {
-                    \Illuminate\Support\Facades\DB::table('nexus_dead_letter_queue')->insert([
+                    DB::table('nexus_dead_letter_queue')->insert([
                         'channel' => null, // Could extract from payload if available
                         'job_class' => $event->job->resolveName(),
                         'payload' => json_encode($event->job->payload()),
@@ -49,7 +59,7 @@ class NexusServiceProvider extends PackageServiceProvider
                         'created_at' => now(),
                         'updated_at' => now(),
                     ]);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     // Fallback log if DB fails
                 }
             }
@@ -61,26 +71,25 @@ class NexusServiceProvider extends PackageServiceProvider
 
     protected function registerRoutes()
     {
-        \Illuminate\Support\Facades\Route::macro('nexusWebhooks', function (string $prefix = 'nexus/webhooks') {
-            \Illuminate\Support\Facades\Route::post($prefix.'/{channel}', [\Malikad778\LaravelNexus\Http\Controllers\WebhookController::class, 'handle'])
+        Route::macro('nexusWebhooks', function (string $prefix = 'nexus/webhooks') {
+            Route::post($prefix.'/{channel}', [WebhookController::class, 'handle'])
                 ->name('nexus.webhooks');
         });
 
-        \Illuminate\Support\Facades\Route::macro('nexusDashboard', function (string $prefix = 'nexus') {
-            \Illuminate\Support\Facades\Route::group([
+        Route::macro('nexusDashboard', function (string $prefix = 'nexus') {
+            Route::group([
                 'prefix' => $prefix,
                 'middleware' => config('nexus.dashboard_middleware', ['web']),
             ], function () {
-                \Illuminate\Support\Facades\Route::get('/', [\Malikad778\LaravelNexus\Http\Controllers\DashboardController::class, 'index'])->name('nexus.dashboard');
-                \Illuminate\Support\Facades\Route::get('/jobs', [\Malikad778\LaravelNexus\Http\Controllers\DashboardController::class, 'jobs'])->name('nexus.dashboard.jobs');
-                \Illuminate\Support\Facades\Route::get('/webhooks', [\Malikad778\LaravelNexus\Http\Controllers\DashboardController::class, 'webhooks'])->name('nexus.dashboard.webhooks');
-                \Illuminate\Support\Facades\Route::get('/dlq', [\Malikad778\LaravelNexus\Http\Controllers\DashboardController::class, 'dlq'])->name('nexus.dashboard.dlq');
+                Route::get('/', [DashboardController::class, 'index'])->name('nexus.dashboard');
+                Route::get('/jobs', [DashboardController::class, 'jobs'])->name('nexus.dashboard.jobs');
+                Route::get('/webhooks', [DashboardController::class, 'webhooks'])->name('nexus.dashboard.webhooks');
+                Route::get('/dlq', [DashboardController::class, 'dlq'])->name('nexus.dashboard.dlq');
 
                 // Actions
-                \Illuminate\Support\Facades\Route::post('/dlq/{id}/retry', [\Malikad778\LaravelNexus\Http\Controllers\DashboardController::class, 'retryJob'])->name('nexus.dashboard.dlq.retry');
-                \Illuminate\Support\Facades\Route::delete('/dlq/{id}', [\Malikad778\LaravelNexus\Http\Controllers\DashboardController::class, 'dismissJob'])->name('nexus.dashboard.dlq.dismiss');
+                Route::post('/dlq/{id}/retry', [DashboardController::class, 'retryJob'])->name('nexus.dashboard.dlq.retry');
+                Route::delete('/dlq/{id}', [DashboardController::class, 'dismissJob'])->name('nexus.dashboard.dlq.dismiss');
             });
         });
     }
 }
-

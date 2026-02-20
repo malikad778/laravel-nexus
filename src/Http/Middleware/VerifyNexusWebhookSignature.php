@@ -6,6 +6,7 @@ use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
 use Malikad778\LaravelNexus\Facades\Nexus;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -20,13 +21,17 @@ class VerifyNexusWebhookSignature
         $verifier = $this->resolveVerifier($channel);
 
         if ($verifier && ! $verifier->verify($request)) {
-            \Illuminate\Support\Facades\DB::table('nexus_webhook_logs')->insert([
+            $topic = 'unknown';
+            try {
+                $topic = Nexus::driver($channel)->extractWebhookTopic($request);
+            } catch (\Exception $e) {
+                // Keep 'unknown' if driver fails
+            }
+
+            DB::table('nexus_webhook_logs')->insert([
                 'channel' => $channel,
-                'topic' => $request->header('X-Shopify-Topic')
-                    ?? $request->header('X-GitHub-Event')
-                    ?? $request->json('Type')
-                    ?? 'unknown',
-                'payload' => json_encode($request->all()),
+                'topic' => $topic,
+                'payload' => $request->getContent(),
                 'headers' => json_encode($request->headers->all()),
                 'status' => 'failed',
                 'exception' => 'Invalid webhook signature.',

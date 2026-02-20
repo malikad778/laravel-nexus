@@ -1,6 +1,6 @@
 <?php
 
-// config for Adnan/LaravelNexus
+// config for Malikad778/LaravelNexus
 return [
     'default' => env('NEXUS_DRIVER', 'shopify'),
 
