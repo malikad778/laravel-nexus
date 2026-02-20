@@ -2,9 +2,9 @@
 
 namespace Malikad778\LaravelNexus\Events;
 
-use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
 
 class ProductImported
 {
@@ -15,4 +15,3 @@ class ProductImported
         public NexusProduct $product
     ) {}
 }
-

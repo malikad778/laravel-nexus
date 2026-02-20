@@ -2,19 +2,19 @@
 
 namespace Malikad778\LaravelNexus;
 
+use Exception;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use Livewire\Livewire;
 use Malikad778\LaravelNexus\Commands\NexusCommand;
-use Malikad778\LaravelNexus\Http\Controllers\WebhookController;
 use Malikad778\LaravelNexus\Http\Controllers\DashboardController;
+use Malikad778\LaravelNexus\Http\Controllers\WebhookController;
+use Malikad778\LaravelNexus\Http\Livewire\DeadLetterQueue;
 use Malikad778\LaravelNexus\Http\Livewire\StatusGrid;
 use Malikad778\LaravelNexus\Http\Livewire\WebhookLog;
-use Malikad778\LaravelNexus\Http\Livewire\DeadLetterQueue;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Queue\Events\JobFailed;
-use Livewire\Livewire;
-use Exception;
 
 class NexusServiceProvider extends PackageServiceProvider
 {

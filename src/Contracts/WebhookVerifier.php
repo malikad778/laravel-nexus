@@ -8,4 +8,3 @@ interface WebhookVerifier
 {
     public function verify(Request $request): bool;
 }
-

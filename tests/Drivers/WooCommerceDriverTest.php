@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
 use Malikad778\LaravelNexus\Facades\Nexus;
-use Illuminate\Support\Facades\Http;
 
 it('can fetch products from woocommerce', function () {
     config()->set('nexus.drivers.woocommerce', [
@@ -62,4 +62,3 @@ it('can update inventory on woocommerce', function () {
                $request['stock_quantity'] === 50;
     });
 });
-

@@ -2,14 +2,13 @@
 
 namespace Malikad778\LaravelNexus\Services;
 
-use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
-use Malikad778\LaravelNexus\Events\InventoryUpdated;
-use Malikad778\LaravelNexus\Events\WebhookReceived;
-use Malikad778\LaravelNexus\Facades\Nexus;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Exception;
+use Malikad778\LaravelNexus\Events\InventoryUpdated;
+use Malikad778\LaravelNexus\Events\WebhookReceived;
+use Malikad778\LaravelNexus\Facades\Nexus;
 
 class WebhookProcessor
 {
@@ -19,6 +18,7 @@ class WebhookProcessor
             $driver = Nexus::driver($channel);
         } catch (Exception $e) {
             Log::error("WebhookProcessing failed. Channel [{$channel}] driver not found.", ['exception' => $e->getMessage()]);
+
             return; // We cannot process if driver doesn't exist.
         }
 
@@ -73,7 +73,7 @@ class WebhookProcessor
                 'exception' => $e->getMessage(),
             ]);
 
-            // We log the error but don't rethrow to avoid failing the 200 OK response 
+            // We log the error but don't rethrow to avoid failing the 200 OK response
             // the controller needs to send back to the webhook provider.
             Log::error("WebhookProcessing failed for log ID [{$logId}].", ['exception' => $e->getMessage()]);
         }

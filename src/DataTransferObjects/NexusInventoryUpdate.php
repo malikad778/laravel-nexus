@@ -11,4 +11,3 @@ class NexusInventoryUpdate
         public array $meta = []
     ) {}
 }
-

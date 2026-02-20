@@ -54,4 +54,3 @@ it('does not leak context to singleton', function () {
 
     expect($config['shop_url'])->not->toBe('leaked.myshopify.com');
 });
-

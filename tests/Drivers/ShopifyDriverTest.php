@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
 use Malikad778\LaravelNexus\Facades\Nexus;
-use Illuminate\Support\Facades\Http;
 
 it('can fetch products from shopify', function () {
     config()->set('nexus.drivers.shopify', [
@@ -80,4 +80,3 @@ it('can update inventory on shopify', function () {
                $request['available'] === 50;
     });
 });
-

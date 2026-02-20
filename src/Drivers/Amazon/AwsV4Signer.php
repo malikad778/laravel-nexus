@@ -56,4 +56,3 @@ class AwsV4Signer
         return array_merge($headers, ['Authorization' => $authorization]);
     }
 }
-

@@ -2,12 +2,12 @@
 
 namespace Malikad778\LaravelNexus\Contracts;
 
-use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
-use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
-use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 
 interface InventoryDriver
 {
@@ -42,4 +42,3 @@ interface InventoryDriver
      */
     public function getChannelName(): string;
 }
-

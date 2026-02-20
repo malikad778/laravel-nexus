@@ -1,8 +1,8 @@
 <?php
 
-use Malikad778\LaravelNexus\Webhooks\Verifiers\ShopifyWebhookVerifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\ShopifyWebhookVerifier;
 
 it('verifies valid shopify signature', function () {
     Config::set('nexus.drivers.shopify.client_secret', 'secret123');
@@ -29,4 +29,3 @@ it('rejects invalid shopify signature', function () {
     $verifier = new ShopifyWebhookVerifier;
     expect($verifier->verify($request))->toBeFalse();
 });
-

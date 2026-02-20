@@ -2,14 +2,14 @@
 
 namespace Malikad778\LaravelNexus\Drivers\Amazon;
 
-use Malikad778\LaravelNexus\Contracts\InventoryDriver;
-use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
-use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
-use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 
 class AmazonDriver implements InventoryDriver
 {
@@ -180,6 +180,7 @@ class AmazonDriver implements InventoryDriver
     public function extractWebhookTopic(Request $request): string
     {
         $content = json_decode($request->getContent(), true);
+
         return $content['Type'] ?? 'unknown';
     }
 
@@ -221,4 +222,3 @@ class AmazonDriver implements InventoryDriver
         return 'amazon';
     }
 }
-

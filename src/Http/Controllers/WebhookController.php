@@ -2,10 +2,10 @@
 
 namespace Malikad778\LaravelNexus\Http\Controllers;
 
-use Malikad778\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
-use Malikad778\LaravelNexus\Services\WebhookProcessor;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Malikad778\LaravelNexus\Http\Middleware\VerifyNexusWebhookSignature;
+use Malikad778\LaravelNexus\Services\WebhookProcessor;
 
 class WebhookController extends Controller
 {

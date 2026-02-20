@@ -1,10 +1,10 @@
 <?php
 
-use Malikad778\LaravelNexus\Events\WebhookReceived;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
+use Malikad778\LaravelNexus\Events\WebhookReceived;
 
 class WebhookControllerTest extends \Malikad778\LaravelNexus\Tests\TestCase
 {
@@ -30,10 +30,10 @@ class WebhookControllerTest extends \Malikad778\LaravelNexus\Tests\TestCase
                     'id' => 123456,
                     'title' => 'Test Product',
                     'variants' => [
-                        ['id' => 987654, 'inventory_quantity' => 15, 'sku' => 'SKU-1', 'price' => '10.00']
-                    ]
-                ]
-            ], 200)
+                        ['id' => 987654, 'inventory_quantity' => 15, 'sku' => 'SKU-1', 'price' => '10.00'],
+                    ],
+                ],
+            ], 200),
         ]);
 
         $payloadData = [
@@ -93,4 +93,3 @@ class WebhookControllerTest extends \Malikad778\LaravelNexus\Tests\TestCase
         expect($log->exception)->toContain('Invalid webhook signature');
     }
 }
-

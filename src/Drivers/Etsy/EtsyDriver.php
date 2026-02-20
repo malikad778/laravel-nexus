@@ -2,14 +2,14 @@
 
 namespace Malikad778\LaravelNexus\Drivers\Etsy;
 
-use Malikad778\LaravelNexus\Contracts\InventoryDriver;
-use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
-use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
-use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 
 class EtsyDriver implements InventoryDriver
 {
@@ -190,4 +190,3 @@ class EtsyDriver implements InventoryDriver
         return 'etsy';
     }
 }
-

@@ -14,4 +14,3 @@ class BeforeInventorySync
         public ?string $batchId = null
     ) {}
 }
-

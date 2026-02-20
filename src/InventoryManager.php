@@ -2,12 +2,12 @@
 
 namespace Malikad778\LaravelNexus;
 
+use Illuminate\Support\Manager;
 use Malikad778\LaravelNexus\Contracts\InventoryDriver;
-use Malikad778\LaravelNexus\Drivers\Shopify\ShopifyDriver;
-use Malikad778\LaravelNexus\Drivers\WooCommerce\WooCommerceDriver;
 use Malikad778\LaravelNexus\Drivers\Amazon\AmazonDriver;
 use Malikad778\LaravelNexus\Drivers\Etsy\EtsyDriver;
-use Illuminate\Support\Manager;
+use Malikad778\LaravelNexus\Drivers\Shopify\ShopifyDriver;
+use Malikad778\LaravelNexus\Drivers\WooCommerce\WooCommerceDriver;
 
 class InventoryManager extends Manager
 {
@@ -81,4 +81,3 @@ class InventoryManager extends Manager
         );
     }
 }
-

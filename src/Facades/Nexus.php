@@ -21,4 +21,3 @@ class Nexus extends Facade
         return 'nexus';
     }
 }
-

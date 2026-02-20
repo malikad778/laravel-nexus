@@ -28,4 +28,3 @@ it('can get channel name from driver', function () {
 
     expect($driver->getChannelName())->toBe('shopify');
 });
-

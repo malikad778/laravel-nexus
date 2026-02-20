@@ -69,4 +69,3 @@ it('dispatches failure event on exception', function () {
         return $event->channel === 'shopify' && $event->reason === 'API Error';
     });
 });
-

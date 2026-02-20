@@ -43,4 +43,3 @@ class BatchBuilder
         return $batch->dispatch();
     }
 }
-

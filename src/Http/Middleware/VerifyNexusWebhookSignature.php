@@ -2,11 +2,11 @@
 
 namespace Malikad778\LaravelNexus\Http\Middleware;
 
-use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
-use Malikad778\LaravelNexus\Facades\Nexus;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
+use Malikad778\LaravelNexus\Facades\Nexus;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -58,4 +58,3 @@ class VerifyNexusWebhookSignature
         }
     }
 }
-

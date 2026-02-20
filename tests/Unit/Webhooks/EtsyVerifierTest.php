@@ -2,8 +2,8 @@
 
 namespace Malikad778\LaravelNexus\Tests\Unit\Webhooks;
 
-use Malikad778\LaravelNexus\Webhooks\Verifiers\EtsyWebhookVerifier;
 use Illuminate\Http\Request;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\EtsyWebhookVerifier;
 
 it('verifies valid etsy signature', function () {
     $config = ['webhook_secret' => 'secret123'];
@@ -31,4 +31,3 @@ it('rejects invalid etsy signature', function () {
 
     expect($verifier->verify($request))->toBeFalse();
 });
-

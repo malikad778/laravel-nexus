@@ -2,8 +2,8 @@
 
 namespace Malikad778\LaravelNexus\Tests;
 
-use Malikad778\LaravelNexus\NexusServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Malikad778\LaravelNexus\NexusServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -58,4 +58,3 @@ class TestCase extends Orchestra
         $migration->up();
     }
 }
-

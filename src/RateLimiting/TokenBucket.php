@@ -60,4 +60,3 @@ LUA;
         return (bool) $result;
     }
 }
-

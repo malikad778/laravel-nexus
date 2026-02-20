@@ -2,8 +2,8 @@
 
 namespace Malikad778\LaravelNexus\Builders;
 
-use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
 use Illuminate\Support\Facades\Bus;
+use Malikad778\LaravelNexus\Jobs\ChannelSyncBatchJob;
 
 class CatalogSyncBuilder
 {
@@ -68,4 +68,3 @@ class CatalogSyncBuilder
             ->dispatch();
     }
 }
-

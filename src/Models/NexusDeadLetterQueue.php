@@ -19,4 +19,3 @@ class NexusDeadLetterQueue extends Model
         'failed_at' => 'datetime',
     ];
 }
-

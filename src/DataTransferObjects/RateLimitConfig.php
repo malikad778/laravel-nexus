@@ -10,4 +10,3 @@ class RateLimitConfig
         public int $cost = 1
     ) {}
 }
-

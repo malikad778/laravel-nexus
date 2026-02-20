@@ -2,8 +2,8 @@
 
 namespace Malikad778\LaravelNexus\Tests\Unit\Webhooks;
 
-use Malikad778\LaravelNexus\Webhooks\Verifiers\WooCommerceWebhookVerifier;
 use Illuminate\Http\Request;
+use Malikad778\LaravelNexus\Webhooks\Verifiers\WooCommerceWebhookVerifier;
 
 it('verifies valid woocommerce signature', function () {
     $config = ['webhook_secret' => 'secret123'];
@@ -29,4 +29,3 @@ it('rejects invalid woocommerce signature', function () {
 
     expect($verifier->verify($request))->toBeFalse();
 });
-
