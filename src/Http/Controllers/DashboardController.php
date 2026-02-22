@@ -1,10 +1,9 @@
 <?php
 
-namespace Adnan\LaravelNexus\Http\Controllers;
+namespace Malikad778\LaravelNexus\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Adnan\LaravelNexus\Models\ChannelMapping;
 
 class DashboardController extends Controller
 {
@@ -12,8 +11,8 @@ class DashboardController extends Controller
     {
         // Gather Stats
         $stats = [
-            'total_products' => \Illuminate\Support\Facades\Schema::hasTable('nexus_channel_mappings') 
-                ? DB::table('nexus_channel_mappings')->count() 
+            'total_products' => \Illuminate\Support\Facades\Schema::hasTable('nexus_channel_mappings')
+                ? DB::table('nexus_channel_mappings')->count()
                 : 0,
             'failed_jobs' => \Illuminate\Support\Facades\Schema::hasTable('nexus_dead_letter_queue')
                 ? DB::table('nexus_dead_letter_queue')->where('status', 'failed')->count()
@@ -26,7 +25,7 @@ class DashboardController extends Controller
                 'woocommerce' => $this->getChannelStatus('woocommerce'),
                 'amazon' => $this->getChannelStatus('amazon'),
                 'etsy' => $this->getChannelStatus('etsy'),
-            ]
+            ],
         ];
 
         return view('nexus::dashboard', compact('stats'));
@@ -45,7 +44,7 @@ class DashboardController extends Controller
     {
         // Check if job_batches table exists
         if (! \Illuminate\Support\Facades\Schema::hasTable('job_batches')) {
-            $batches = collect([]); 
+            $batches = collect([]);
             $error = "The 'job_batches' table does not exist. Please run 'php artisan queue:batches-table' and migrate.";
         } else {
             $batches = DB::table('job_batches')
@@ -70,37 +69,39 @@ class DashboardController extends Controller
     {
         $job = DB::table('nexus_dead_letter_queue')->find($id);
 
-        if ($job && $job->status === 'failed') {
+        // PHPStan might infer array|object, force explicit object check or type hint
+        if ($job && is_object($job) && $job->status === 'failed') {
+            /** @var object{status: string, payload: string} $job */
             // Dispatch the job again
             // We need to reconstruct the job object from payload?
             // Or typically, we just push the class and payload back to queue.
-            
+
             // For simplicity in this phase, we'll use the job class and payload.
             // But `dispatch` usually expects a Job instance.
             // If the payload is the serialized job (standard Laravel), we can unserialize it.
-            
+
             try {
                 $payload = json_decode($job->payload, true);
-                
+
                 // If it's a standard Laravel job payload, it has 'job', 'data', etc.
                 // We might need to use `Queue::pushRaw` or similar if we want to preserve exactness,
                 // but usually we want to "Retry" which means creating a NEW job instance with same data.
-                
+
                 // Let's assume the payload is what `job->payload()` returned.
                 // If it was serialized, we can `unserialize($payload['data']['command'])`.
-                
+
                 if (isset($payload['data']['command'])) {
                     $command = unserialize($payload['data']['command']);
                     dispatch($command);
-                    
+
                     DB::table('nexus_dead_letter_queue')
                         ->where('id', $id)
                         ->update(['status' => 'retried', 'updated_at' => now()]);
-                        
+
                     return back()->with('success', 'Job retried successfully.');
                 }
             } catch (\Exception $e) {
-                return back()->with('error', 'Failed to retry job: ' . $e->getMessage());
+                return back()->with('error', 'Failed to retry job: '.$e->getMessage());
             }
         }
 
@@ -121,7 +122,7 @@ class DashboardController extends Controller
         // Logic to determine status (active/inactive/errors)
         // For now, check if config exists and if there are recent errors
         $configured = ! empty(config("nexus.drivers.{$channel}"));
-        
+
         $errors = \Illuminate\Support\Facades\Schema::hasTable('nexus_dead_letter_queue')
             ? DB::table('nexus_dead_letter_queue')
                 ->where('channel', $channel)

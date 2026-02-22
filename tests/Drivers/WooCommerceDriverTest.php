@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\Facades\Nexus;
 
 it('can fetch products from woocommerce', function () {
     config()->set('nexus.drivers.woocommerce', [
@@ -19,7 +19,7 @@ it('can fetch products from woocommerce', function () {
                 'sku' => 'WOO-ALBUM',
                 'price' => '15.00',
                 'stock_quantity' => 20,
-            ]
+            ],
         ], 200),
     ]);
 
@@ -32,7 +32,7 @@ it('can fetch products from woocommerce', function () {
     expect($products->first()->name)->toBe('Woo Album');
     expect($products->first()->price)->toBe(15.00);
     expect($products->first()->quantity)->toBe(20);
-    expect($products->first()->remote_id)->toBe('101');
+    expect($products->first()->id)->toBe('101');
 });
 
 it('can update inventory on woocommerce', function () {

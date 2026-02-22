@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\Facades\Nexus;
 
 it('can fetch products from shopify', function () {
     config()->set('nexus.drivers.shopify', [
@@ -23,10 +23,10 @@ it('can fetch products from shopify', function () {
                             'price' => '19.99',
                             'sku' => 'TEST-SKU',
                             'inventory_quantity' => 10,
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ], 200),
     ]);
 
@@ -39,7 +39,7 @@ it('can fetch products from shopify', function () {
     expect($products->first()->name)->toBe('Test Product');
     expect($products->first()->price)->toBe(19.99);
     expect($products->first()->quantity)->toBe(10);
-    expect($products->first()->remote_id)->toBe('987654');
+    expect($products->first()->id)->toBe('123456');
 });
 
 it('can update inventory on shopify', function () {
@@ -56,14 +56,14 @@ it('can update inventory on shopify', function () {
             'variant' => [
                 'id' => 987654,
                 'inventory_item_id' => 777777,
-            ]
+            ],
         ], 200),
         'test-shop.myshopify.com/admin/api/2024-01/inventory_levels/set.json' => Http::response([
             'inventory_level' => [
                 'inventory_item_id' => 777777,
                 'location_id' => 888888,
                 'available' => 50,
-            ]
+            ],
         ], 200),
     ]);
 
@@ -71,7 +71,7 @@ it('can update inventory on shopify', function () {
     $result = $driver->updateInventory('987654', 50);
 
     expect($result)->toBeTrue();
-    
+
     // Verify the set call was made
     Http::assertSent(function ($request) {
         return $request->url() === 'https://test-shop.myshopify.com/admin/api/2024-01/inventory_levels/set.json' &&

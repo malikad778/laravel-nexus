@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Redis;
-use Adnan\LaravelNexus\RateLimiting\TokenBucket;
+use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 
 it('can acquire tokens', function () {
     // Mock Redis::eval
@@ -15,7 +15,7 @@ it('can acquire tokens', function () {
         })
         ->andReturn(1);
 
-    $bucket = new TokenBucket();
+    $bucket = new TokenBucket;
     $result = $bucket->acquire('test_channel', 10, 1.0);
 
     expect($result)->toBeTrue();
@@ -26,7 +26,7 @@ it('fails when redis returns 0', function () {
         ->once()
         ->andReturn(0);
 
-    $bucket = new TokenBucket();
+    $bucket = new TokenBucket;
     $result = $bucket->acquire('test_channel', 10, 1.0);
 
     expect($result)->toBeFalse();

@@ -1,8 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Drivers\Amazon;
-
-use Illuminate\Support\Facades\Http;
+namespace Malikad778\LaravelNexus\Drivers\Amazon;
 
 class AwsV4Signer
 {
@@ -25,7 +23,7 @@ class AwsV4Signer
 
         $headers['host'] = $host;
         $headers['x-amz-date'] = $now;
-        
+
         // 1. Canonical Request
         $canonicalHeaders = '';
         $signedHeaders = '';
@@ -42,10 +40,10 @@ class AwsV4Signer
 
         // 2. String to Sign
         $credentialScope = "{$date}/{$this->region}/{$this->service}/aws4_request";
-        $stringToSign = "AWS4-HMAC-SHA256\n{$now}\n{$credentialScope}\n" . hash('sha256', $canonicalRequest);
+        $stringToSign = "AWS4-HMAC-SHA256\n{$now}\n{$credentialScope}\n".hash('sha256', $canonicalRequest);
 
         // 3. Signature
-        $kSecret = "AWS4" . $this->secretAccessKey;
+        $kSecret = 'AWS4'.$this->secretAccessKey;
         $kDate = hash_hmac('sha256', $date, $kSecret, true);
         $kRegion = hash_hmac('sha256', $this->region, $kDate, true);
         $kService = hash_hmac('sha256', $this->service, $kRegion, true);

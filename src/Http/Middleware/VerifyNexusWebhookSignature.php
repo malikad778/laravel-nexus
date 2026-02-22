@@ -1,56 +1,60 @@
 <?php
 
-namespace Adnan\LaravelNexus\Http\Middleware;
+namespace Malikad778\LaravelNexus\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Malikad778\LaravelNexus\Contracts\WebhookVerifier;
+use Malikad778\LaravelNexus\Facades\Nexus;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Adnan\LaravelNexus\Webhooks\Verifiers\ShopifyWebhookVerifier;
-use Adnan\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
 
 class VerifyNexusWebhookSignature
 {
-    public function handle(Request $request, Closure $next, string $channel = null): Response
+    public function handle(Request $request, Closure $next, ?string $channel = null): Response
     {
-        // Loopback/Testing bypass if needed (optional)
-        
         if (! $channel) {
-            // Try to guess from route param
             $channel = $request->route('channel');
         }
 
         $verifier = $this->resolveVerifier($channel);
 
         if ($verifier && ! $verifier->verify($request)) {
-             \Illuminate\Support\Facades\DB::table('nexus_webhook_logs')->insert([
+            $topic = 'unknown';
+            try {
+                $topic = Nexus::driver($channel)->extractWebhookTopic($request);
+            } catch (\Exception $e) {
+                // Keep 'unknown' if driver fails
+            }
+
+            DB::table('nexus_webhook_logs')->insert([
                 'channel' => $channel,
-                'topic' => $request->header('X-Shopify-Topic') 
-                    ?? $request->header('X-GitHub-Event') 
-                    ?? $request->json('Type') 
-                    ?? 'unknown',
-                'payload' => json_encode($request->all()),
+                'topic' => $topic,
+                'payload' => $request->getContent(),
                 'headers' => json_encode($request->headers->all()),
                 'status' => 'failed',
                 'exception' => 'Invalid webhook signature.',
                 'created_at' => now(),
                 'updated_at' => now(),
-             ]);
+            ]);
 
-             throw new AccessDeniedHttpException('Invalid webhook signature.');
+            throw new AccessDeniedHttpException('Invalid webhook signature.');
         }
 
         return $next($request);
     }
 
-    protected function resolveVerifier(?string $channel): ?\Adnan\LaravelNexus\Webhooks\Verifiers\WebhookVerifier
+    protected function resolveVerifier(?string $channel): ?WebhookVerifier
     {
-        return match ($channel) {
-            'shopify' => new ShopifyWebhookVerifier(),
-            'amazon' => new AmazonWebhookVerifier(),
-            // 'woocommerce' => new WooCommerceWebhookVerifier(),
-            // 'etsy' => new EtsyWebhookVerifier(),
-            default => null,
-        };
+        if (! $channel) {
+            return null;
+        }
+
+        try {
+            return Nexus::driver($channel)->getWebhookVerifier();
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

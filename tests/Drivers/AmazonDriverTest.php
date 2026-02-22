@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
-use Adnan\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\Facades\Nexus;
 
 it('can update inventory on amazon', function () {
     config()->set('nexus.drivers.amazon', [

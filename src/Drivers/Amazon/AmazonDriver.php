@@ -1,12 +1,15 @@
 <?php
 
-namespace Adnan\LaravelNexus\Drivers\Amazon;
+namespace Malikad778\LaravelNexus\Drivers\Amazon;
 
-use Adnan\LaravelNexus\Contracts\InventoryDriver;
-use Illuminate\Support\Enumerable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\Contracts\InventoryDriver;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 
 class AmazonDriver implements InventoryDriver
 {
@@ -28,66 +31,95 @@ class AmazonDriver implements InventoryDriver
         ]);
 
         if ($response->failed()) {
-            throw new \RuntimeException('Failed to authenticate with Amazon LWA: ' . $response->body());
+            throw new \RuntimeException('Failed to authenticate with Amazon LWA: '.$response->body());
         }
 
         return $this->accessToken = $response->json('access_token');
     }
 
-    public function getProducts(Carbon $since): Enumerable
+    public function getProducts(Carbon $since): Collection
     {
         $accessToken = $this->getAccessToken();
-        
-        // Use Listings Items API to search/list items
-        // Note: SP-API is complex. This is a simplified "search" or "list" implementation.
-        // For "getProducts", we might use Reports API for bulk or Listings API for individual.
-        // Let's assume we search for items updated recently (if API supports) or just list items.
-        
-        // Simplified: Fetching a hardcoded list or search isn't straightforward without a specific robust strategy
-        // For the sake of this driver implementation, we will mock/implement a conceptual "search" call
-        // using the Catalog Items API or Listings API.
-        
-        // Let's use a hypothetical "search" endpoint or just return empty for now if no specific search query.
-        // In reality, syncing Amazon usually involves requesting a report (GET_MERCHANT_LISTINGS_ALL_DATA).
-        // Since this is a synchronous driver method, we'll try to hit an endpoint that returns data immediately,
-        // but be aware of rate limits.
-        
-        // To follow the "build from scratch" instruction properly, I will implement the logic to SIGN and SEND the request,
-        // even if the specific endpoint (Reports vs Listings) is debatable.
-        
-        // Example: List Listings
-        $endpoint = "https://sellingpartnerapi-na.amazon.com/listings/2021-08-01/items/{$this->config['seller_id']}";
-        
+
+        $endpoint = 'https://sellingpartnerapi-na.amazon.com/catalog/2022-04-01/items';
+
         $signer = new AwsV4Signer(
             $this->config['access_key_id'],
             $this->config['secret_access_key'],
-            $this->config['region'],
-            'execute-api'
+            $this->config['region'] ?? 'us-east-1'
         );
 
-        // This is a GET request
-        $headers = [
-            'x-amz-access-token' => $accessToken,
-            'user-agent' => 'LaravelNexus/1.0',
+        $queryParams = [
+            'marketplaceIds' => $this->config['marketplace_id'] ?? 'ATVPDKIKX0DER',
+            'pageSize' => 20,
+            'includedData' => 'summaries,attributes',
         ];
 
-        // Headers are signed in the request
-        // NOTE: AwsV4Signer needs to be integrated properly.
-        
-        // For now, let's implement the updateInventory structure first as it is more standard (PATCH)
-        // and leave getProducts as a placeholder that returns empty or throws not implemented until Phase 3 (Queue) 
-        // because Amazon sync SHOULD be report-based (async).
-        // However, the interface demands it. I will return empty collection for now or mock it in tests.
-        
-        return collect([]); 
+        $urlWithQuery = $endpoint.'?'.http_build_query($queryParams);
+
+        $headers = [
+            'x-amz-access-token' => $accessToken,
+            'host' => 'sellingpartnerapi-na.amazon.com',
+        ];
+
+        $signedHeaders = $signer->signRequest('GET', $urlWithQuery, $headers);
+
+        $response = Http::withHeaders($signedHeaders)->get($urlWithQuery);
+
+        if ($response->failed()) {
+            return collect([]);
+        }
+
+        $items = $response->json('items', []);
+
+        return collect($items)->map(function ($item) {
+            $summary = $item['summaries'][0] ?? [];
+
+            return NexusProduct::fromAmazon($item); // Use the static factory we added in DTO
+        });
+    }
+
+    public function fetchProduct(string $remoteId): NexusProduct
+    {
+        $accessToken = $this->getAccessToken();
+
+        $endpoint = "https://sellingpartnerapi-na.amazon.com/catalog/2022-04-01/items/{$remoteId}";
+
+        $queryParams = [
+            'marketplaceIds' => $this->config['marketplace_id'] ?? 'ATVPDKIKX0DER',
+            'includedData' => 'summaries,attributes,images',
+        ];
+
+        $urlWithQuery = $endpoint.'?'.http_build_query($queryParams);
+
+        $signer = new AwsV4Signer(
+            $this->config['access_key_id'],
+            $this->config['secret_access_key'],
+            $this->config['region'] ?? 'us-east-1'
+        );
+
+        $headers = [
+            'x-amz-access-token' => $accessToken,
+            'host' => 'sellingpartnerapi-na.amazon.com',
+        ];
+
+        $signedHeaders = $signer->signRequest('GET', $urlWithQuery, $headers);
+
+        $response = Http::withHeaders($signedHeaders)->get($urlWithQuery);
+
+        if ($response->failed()) {
+            throw new \RuntimeException('Failed to fetch Amazon product: '.$response->body());
+        }
+
+        return NexusProduct::fromAmazon($response->json());
     }
 
     public function updateInventory(string $remoteId, int $quantity): bool
     {
         $accessToken = $this->getAccessToken();
-        
+
         $endpoint = "https://sellingpartnerapi-na.amazon.com/listings/2021-08-01/items/{$this->config['seller_id']}/{$remoteId}";
-        
+
         $body = [
             'productType' => 'PRODUCT', // generic
             'patches' => [
@@ -98,20 +130,20 @@ class AmazonDriver implements InventoryDriver
                         [
                             'fulfillment_channel_code' => 'DEFAULT',
                             'quantity' => $quantity,
-                        ]
+                        ],
                     ],
                 ],
             ],
         ];
 
         $payload = json_encode($body);
-        
+
         $signer = new AwsV4Signer(
             $this->config['access_key_id'],
             $this->config['secret_access_key'],
             $this->config['region'] ?? 'us-east-1'
         );
-        
+
         $headers = [
             'x-amz-access-token' => $accessToken,
             'content-type' => 'application/json',
@@ -119,7 +151,7 @@ class AmazonDriver implements InventoryDriver
         ];
 
         $signedHeaders = $signer->signRequest('PATCH', $endpoint, $headers, $payload);
-        
+
         $response = Http::withHeaders($signedHeaders)
             ->withBody($payload, 'application/json')
             ->patch($endpoint);
@@ -129,6 +161,60 @@ class AmazonDriver implements InventoryDriver
         }
 
         return $response->successful();
+    }
+
+    public function pushInventory(NexusInventoryUpdate $update): bool
+    {
+        if (! $update->remoteId) {
+            return false; // Amazon usually requires ASIN or SKU
+        }
+
+        return $this->updateInventory($update->remoteId, $update->quantity);
+    }
+
+    public function verifyWebhookSignature(Request $request): bool
+    {
+        return $this->getWebhookVerifier()->verify($request);
+    }
+
+    public function extractWebhookTopic(Request $request): string
+    {
+        $content = json_decode($request->getContent(), true);
+
+        return $content['Type'] ?? 'unknown';
+    }
+
+    public function getWebhookVerifier(): \Malikad778\LaravelNexus\Contracts\WebhookVerifier
+    {
+        return new \Malikad778\LaravelNexus\Webhooks\Verifiers\AmazonWebhookVerifier;
+    }
+
+    public function parseWebhookPayload(Request $request): NexusInventoryUpdate
+    {
+        // Parse SNS notification
+        $content = json_decode($request->getContent(), true);
+        $message = json_decode($content['Message'] ?? '{}', true);
+
+        // Logic to extract SKU/ASIN from common Notification Types (e.g. ListingsItemStatusChange)
+        $sku = $message['SellerSKU'] ?? 'unknown';
+        $asin = $message['ASIN'] ?? '';
+
+        return new NexusInventoryUpdate(
+            sku: $sku,
+            quantity: 0, // Often need to fetch fresh
+            remoteId: $asin,
+            meta: $message
+        );
+    }
+
+    public function getRateLimitConfig(): RateLimitConfig
+    {
+        // SP-API is typically 5-10 requests/sec with burst
+        return new RateLimitConfig(
+            capacity: 5,
+            rate: 1,
+            cost: 1
+        );
     }
 
     public function getChannelName(): string

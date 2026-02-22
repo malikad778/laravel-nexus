@@ -1,21 +1,25 @@
 <?php
 
-namespace Adnan\LaravelNexus\Jobs;
+namespace Malikad778\LaravelNexus\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\RateLimiting\TokenBucket;
+use Malikad778\LaravelNexus\Events\ChannelThrottled;
+use Malikad778\LaravelNexus\Events\InventorySyncFailed;
+use Malikad778\LaravelNexus\Events\InventoryUpdated;
+use Malikad778\LaravelNexus\Facades\Nexus;
+use Malikad778\LaravelNexus\RateLimiting\TokenBucket;
 
-class PushInventoryJob implements ShouldQueue, ShouldBeUnique
+class PushInventoryJob implements ShouldBeUnique, ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $tries = 3;
+
     public $backoff = [10, 30, 60];
 
     public function __construct(
@@ -40,14 +44,42 @@ class PushInventoryJob implements ShouldQueue, ShouldBeUnique
         $rate = config("nexus.rate_limits.{$this->channel}.rate", 1.0);
 
         if (! $limiter->acquire($this->channel, $capacity, $rate)) {
+            ChannelThrottled::dispatch($this->channel, 5);
             $this->release(5); // Release back to queue with delay
+
             return;
         }
 
         $driver = Nexus::driver($this->channel);
-        
-        if (! $driver->updateInventory($this->remoteId, $this->quantity)) {
+
+        // Fetch current state to get "previous" quantity for the event
+        try {
+            $product = $driver->fetchProduct($this->remoteId);
+            $previousQuantity = $product->quantity;
+        } catch (\Exception $e) {
+            $product = null;
+            $previousQuantity = 0;
+        }
+
+        if ($driver->updateInventory($this->remoteId, $this->quantity)) {
+            if ($product) {
+                InventoryUpdated::dispatch(
+                    $this->channel,
+                    $product,
+                    $previousQuantity,
+                    $this->quantity
+                );
+            }
+        } else {
             $this->fail(new \Exception("Failed to update inventory for {$this->channel}: {$this->remoteId}"));
         }
+    }
+
+    public function failed(\Throwable $exception): void
+    {
+        InventorySyncFailed::dispatch(
+            $this->channel,
+            $exception->getMessage()
+        );
     }
 }

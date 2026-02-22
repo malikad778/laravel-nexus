@@ -1,23 +1,41 @@
 <?php
 
-namespace Adnan\LaravelNexus\Contracts;
+namespace Malikad778\LaravelNexus\Contracts;
 
-use Illuminate\Support\Enumerable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusInventoryUpdate;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\RateLimitConfig;
 
 interface InventoryDriver
 {
     /**
      * Fetch products modified since the given timestamp.
-     * 
-     * @return Enumerable<int, \Adnan\LaravelNexus\DataTransferObjects\NexusProduct>
+     *
+     * @return Collection<int, NexusProduct>
      */
-    public function getProducts(Carbon $since): Enumerable;
+    public function getProducts(Carbon $since): Collection;
+
+    public function fetchProduct(string $remoteId): NexusProduct;
 
     /**
      * Update inventory for a specific product variant.
      */
     public function updateInventory(string $remoteId, int $quantity): bool;
+
+    public function pushInventory(NexusInventoryUpdate $update): bool;
+
+    public function verifyWebhookSignature(Request $request): bool;
+
+    public function getWebhookVerifier(): WebhookVerifier;
+
+    public function extractWebhookTopic(Request $request): string;
+
+    public function parseWebhookPayload(Request $request): NexusInventoryUpdate;
+
+    public function getRateLimitConfig(): RateLimitConfig;
 
     /**
      * Get the unique identifier for the channel (e.g., 'shopify', 'woocommerce').

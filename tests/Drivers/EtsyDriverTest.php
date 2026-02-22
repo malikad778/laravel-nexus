@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Http;
-use Adnan\LaravelNexus\Facades\Nexus;
-use Adnan\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\DataTransferObjects\NexusProduct;
+use Malikad778\LaravelNexus\Facades\Nexus;
 
 it('can fetch products from etsy', function () {
     config()->set('nexus.drivers.etsy', [
@@ -20,8 +20,8 @@ it('can fetch products from etsy', function () {
                     'skus' => ['ETSY-SKU'],
                     'price' => ['amount' => 2000, 'divisor' => 100],
                     'quantity' => 5,
-                ]
-            ]
+                ],
+            ],
         ], 200),
     ]);
 
@@ -34,7 +34,7 @@ it('can fetch products from etsy', function () {
     expect($products->first()->name)->toBe('Etsy Item');
     expect($products->first()->price)->toBe(20.00);
     expect($products->first()->quantity)->toBe(5);
-    expect($products->first()->remote_id)->toBe('111');
+    expect($products->first()->id)->toBe('111');
 });
 
 it('can update inventory on etsy', function () {
@@ -53,13 +53,13 @@ it('can update inventory on etsy', function () {
                 [
                     'product_id' => 999,
                     'offerings' => [
-                        ['offering_id' => 888, 'quantity' => 5]
-                    ]
-                ]
-            ]
+                        ['offering_id' => 888, 'quantity' => 5],
+                    ],
+                ],
+            ],
         ], 200),
         'api.etsy.com/v3/application/shops/shop_123/listings/111/inventory' => Http::response([
-            'products' => []
+            'products' => [],
         ], 200),
     ]);
 
@@ -80,7 +80,7 @@ it('can update inventory on etsy', function () {
         if ($request->url() !== 'https://api.etsy.com/v3/application/shops/shop_123/listings/111/inventory') {
             return false;
         }
-        
+
         return $request->method() === 'PUT' &&
                $request->hasHeader('x-api-key') &&
                $request->header('Authorization')[0] === 'Bearer new_at_123' &&

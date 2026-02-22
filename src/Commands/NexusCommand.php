@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\Commands;
+namespace Malikad778\LaravelNexus\Commands;
 
 use Illuminate\Console\Command;
 

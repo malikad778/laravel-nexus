@@ -1,6 +1,6 @@
 <?php
 
-namespace Adnan\LaravelNexus\RateLimiting;
+namespace Malikad778\LaravelNexus\RateLimiting;
 
 use Illuminate\Support\Facades\Redis;
 
@@ -9,15 +9,14 @@ class TokenBucket
     /**
      * Attempt to acquire tokens from the bucket.
      *
-     * @param string $key Identifier for the bucket (e.g., channel name)
-     * @param int $capacity Max tokens in the bucket
-     * @param float $rate Tokens added per second
-     * @param int $cost Tokens required for this operation
-     * @return bool
+     * @param  string  $key  Identifier for the bucket (e.g., channel name)
+     * @param  int  $capacity  Max tokens in the bucket
+     * @param  float  $rate  Tokens added per second
+     * @param  int  $cost  Tokens required for this operation
      */
     public function acquire(string $key, int $capacity, float $rate, int $cost = 1): bool
     {
-        $script = <<<LUA
+        $script = <<<'LUA'
             local key = KEYS[1]
             local capacity = tonumber(ARGV[1])
             local rate = tonumber(ARGV[2])
@@ -53,6 +52,9 @@ class TokenBucket
             end
 LUA;
 
+        // PHPStan expects Phpredis signature: eval(script, args[], num_keys)
+        // We use the raw command signature supported by Laravel's Redis facade (Predis/PhpRedis dynamic proxy).
+        /** @phpstan-ignore-next-line */
         $result = Redis::eval($script, 1, "nexus:limiter:{$key}", $capacity, $rate, $cost, microtime(true));
 
         return (bool) $result;
